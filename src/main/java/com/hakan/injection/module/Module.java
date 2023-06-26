@@ -2,6 +2,7 @@ package com.hakan.injection.module;
 
 import com.hakan.injection.annotations.Provide;
 import com.hakan.injection.entity.AbstractEntity;
+import com.hakan.injection.entity.AbstractEntityFactory;
 import com.hakan.injection.entity.impl.EmptyEntity;
 import com.hakan.injection.entity.impl.InjectorEntity;
 import com.hakan.injection.entity.impl.ProviderEntity;
@@ -59,7 +60,7 @@ public abstract class Module {
      * @return abstract entity
      */
     public final @Nonnull AbstractEntity bind(@Nonnull Class<?> clazz) {
-        return this.bind(AbstractEntity.byType(this, clazz));
+        return this.bind(AbstractEntityFactory.create(this, clazz));
     }
 
     /**
@@ -70,7 +71,7 @@ public abstract class Module {
      * @return abstract entity
      */
     public final @Nonnull AbstractEntity bind(@Nonnull Method method) {
-        return this.bind(AbstractEntity.byMethod(this, method));
+        return this.bind(AbstractEntityFactory.create(this, method));
     }
 
     /**
