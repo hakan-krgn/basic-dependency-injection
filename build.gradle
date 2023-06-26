@@ -1,0 +1,42 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+}
+
+group 'com.hakan'
+version '0.0.1'
+sourceCompatibility = 8
+compileJava.options.encoding = 'UTF-8'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.28'
+    annotationProcessor 'org.projectlombok:lombok:1.18.28'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = project.group
+            version = project.version
+            artifactId = project.name
+            from components.java
+        }
+    }
+}
+
+artifacts.archives(tasks.shadowJar)
+
+tasks.jar {
+    enabled = false
+}
+
+tasks.shadowJar {
+    archiveFileName.set(rootProject.name + ".jar")
+}
+
