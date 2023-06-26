@@ -8,10 +8,22 @@ import lombok.SneakyThrows;
 import javax.annotation.Nonnull;
 import java.lang.reflect.Method;
 
+/**
+ * ProviderEntity is an entity class that
+ * contains method which is used to
+ * provide dependencies to the class.
+ */
 public class ProviderEntity extends AbstractEntity {
 
     private final Method method;
 
+    /**
+     * Constructor of {@link ProviderEntity}.
+     *
+     * @param module module
+     * @param type   type
+     * @param method method
+     */
     public ProviderEntity(@Nonnull Module module,
                           @Nonnull Class<?> type,
                           @Nonnull Method method) {
@@ -19,14 +31,34 @@ public class ProviderEntity extends AbstractEntity {
         this.method = method;
     }
 
+    /**
+     * Returns the method of the class.
+     *
+     * @return method
+     */
     public @Nonnull Method getMethod() {
         return this.method;
     }
 
 
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @SneakyThrows
     public @Nonnull Object createInstance() {
+        Class<?>[] parameterTypes = this.method.getParameterTypes();
+        Object[] parameters = new Object[parameterTypes.length];
+
+        for (int i = 0; i < parameterTypes.length; i++) {
+            AbstractEntity _entity = super.module.getEntityByClass(parameterTypes[i]);
+            parameters[i] = _entity.getInstance();
+
+            if (parameters[i] == null)
+                parameters[i] = super.module.createInstance(_entity);
+        }
+
         return super.instance = this.method.invoke(super.module, this.parameters);
     }
 }
