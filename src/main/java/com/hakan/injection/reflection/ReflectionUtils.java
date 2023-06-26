@@ -2,6 +2,7 @@ package com.hakan.injection.reflection;
 
 import lombok.SneakyThrows;
 
+import javax.annotation.Nonnull;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -13,8 +14,8 @@ import java.util.Set;
 public class ReflectionUtils {
 
     @SneakyThrows
-    public static Constructor<?> getConstructor(Class<?> type,
-                                                Class<? extends Annotation> annotation) {
+    public static Constructor<?> getConstructor(@Nonnull Class<?> type,
+                                                @Nonnull Class<? extends Annotation> annotation) {
         for (Constructor<?> constructor : type.getDeclaredConstructors())
             if (constructor.isAnnotationPresent(annotation))
                 return constructor;
@@ -23,7 +24,7 @@ public class ReflectionUtils {
 
 
     @SneakyThrows
-    public static Set<Class<?>> findClasses(String basePackage) {
+    public static @Nonnull Set<Class<?>> findClasses(@Nonnull String basePackage) {
         Set<Class<?>> classes = new HashSet<>();
         BufferedReader reader = getReader(basePackage);
 
@@ -37,7 +38,7 @@ public class ReflectionUtils {
     }
 
     @SneakyThrows
-    private static BufferedReader getReader(String basePackage) {
+    private static @Nonnull BufferedReader getReader(@Nonnull String basePackage) {
         InputStream stream = ClassLoader.getSystemClassLoader()
                 .getResourceAsStream(basePackage.replaceAll("[.]", "/"));
 

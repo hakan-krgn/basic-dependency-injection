@@ -1,5 +1,6 @@
 package com.hakan.injection.reflection;
 
+import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -14,42 +15,42 @@ public class Reflection {
 
     private final Set<Class<?>> types;
 
-    public Reflection(String basePackage) {
+    public Reflection(@Nonnull String basePackage) {
         this.types = ReflectionUtils.findClasses(basePackage);
     }
 
-    public Reflection(Class<?> clazz) {
+    public Reflection(@Nonnull Class<?> clazz) {
         this.types = new HashSet<>(Collections.singletonList(clazz));
     }
 
-    public Set<Field> getFieldsAnnotatedWith(Class<? extends Annotation> annotation) {
+    public @Nonnull Set<Field> getFieldsAnnotatedWith(@Nonnull Class<? extends Annotation> annotation) {
         return this.types.stream()
                 .flatMap(type -> Arrays.stream(type.getDeclaredFields()))
                 .filter(field -> field.isAnnotationPresent(annotation))
                 .collect(Collectors.toSet());
     }
 
-    public Set<Method> getMethodsAnnotatedWith(Class<? extends Annotation> annotation) {
+    public @Nonnull Set<Method> getMethodsAnnotatedWith(@Nonnull Class<? extends Annotation> annotation) {
         return this.types.stream()
                 .flatMap(type -> Arrays.stream(type.getDeclaredMethods()))
                 .filter(method -> method.isAnnotationPresent(annotation))
                 .collect(Collectors.toSet());
     }
 
-    public Set<Constructor<?>> getConstructorsAnnotatedWith(Class<? extends Annotation> annotation) {
+    public @Nonnull Set<Constructor<?>> getConstructorsAnnotatedWith(@Nonnull Class<? extends Annotation> annotation) {
         return this.types.stream()
                 .flatMap(type -> Arrays.stream(type.getDeclaredConstructors()))
                 .filter(constructor -> constructor.isAnnotationPresent(annotation))
                 .collect(Collectors.toSet());
     }
 
-    public Set<Class<?>> getTypesAnnotatedWith(Class<? extends Annotation> annotation) {
+    public @Nonnull Set<Class<?>> getTypesAnnotatedWith(@Nonnull Class<? extends Annotation> annotation) {
         return this.types.stream()
                 .filter(type -> type.isAnnotationPresent(annotation))
                 .collect(Collectors.toSet());
     }
 
-    public Set<Class<?>> getSubTypesOf(Class<?> type) {
+    public @Nonnull Set<Class<?>> getSubTypesOf(@Nonnull Class<?> type) {
         return this.types.stream()
                 .filter(assign -> !assign.equals(type))
                 .filter(type::isAssignableFrom)

@@ -3,9 +3,11 @@ package com.hakan.injection;
 import com.hakan.injection.module.Module;
 import com.hakan.injection.module.impl.CombinerModule;
 
+import javax.annotation.Nonnull;
+
 public class Injector {
 
-    public static Injector of(Module... modules) {
+    public static @Nonnull Injector of(@Nonnull Module... modules) {
         return new Injector(new CombinerModule(modules)).init();
     }
 
@@ -13,16 +15,16 @@ public class Injector {
 
     private final Module module;
 
-    private Injector(Module module) {
+    private Injector(@Nonnull Module module) {
         this.module = module;
     }
 
-    public <T> T getInstance(Class<T> clazz) {
+    public @Nonnull <T> T getInstance(@Nonnull Class<T> clazz) {
         return this.module.getInstance(clazz);
     }
 
 
-    private Injector init() {
+    private @Nonnull Injector init() {
         this.module.configure();
         this.module.create();
         return this;

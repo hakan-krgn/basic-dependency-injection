@@ -10,6 +10,7 @@ import com.hakan.injection.reflection.Reflection;
 import com.hakan.injection.reflection.ReflectionUtils;
 import lombok.SneakyThrows;
 
+import javax.annotation.Nonnull;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.HashSet;
@@ -29,28 +30,28 @@ public abstract class Module {
     }
 
 
-    public final <T> T getInstance(Class<? extends T> clazz) {
+    public final @Nonnull <T> T getInstance(@Nonnull Class<? extends T> clazz) {
         return (T) this.getEntityByClass(clazz).getInstance();
     }
 
-    public final AbstractEntity bind(Class<?> clazz) {
+    public final @Nonnull AbstractEntity bind(@Nonnull Class<?> clazz) {
         return this.bind(ReflectionUtils.getConstructor(clazz, Autowired.class));
     }
 
-    public final AbstractEntity bind(Constructor<?> constructor) {
+    public final @Nonnull AbstractEntity bind(@Nonnull Constructor<?> constructor) {
         return this.bind(AbstractEntity.byType(this, constructor.getDeclaringClass(), constructor));
     }
 
-    public final AbstractEntity bind(Method method) {
+    public final @Nonnull AbstractEntity bind(@Nonnull Method method) {
         return this.bind(AbstractEntity.byMethod(this, method.getReturnType(), method));
     }
 
-    public final AbstractEntity bind(AbstractEntity entity) {
+    public final @Nonnull AbstractEntity bind(@Nonnull AbstractEntity entity) {
         this.entities.add(entity);
         return entity;
     }
 
-    public final void install(Module module) {
+    public final void install(@Nonnull Module module) {
         this.entities.addAll(module.entities);
     }
 
@@ -63,7 +64,7 @@ public abstract class Module {
 
 
 
-    private AbstractEntity getEntityByClass(Class<?> clazz) {
+    private @Nonnull AbstractEntity getEntityByClass(@Nonnull Class<?> clazz) {
         return this.entities.stream()
                 .filter(entity -> entity.getType().equals(clazz) || entity.getSubTypes().contains(clazz))
                 .findFirst()
@@ -71,7 +72,7 @@ public abstract class Module {
     }
 
     @SneakyThrows
-    private Object createInstance(AbstractEntity entity) {
+    private @Nonnull Object createInstance(@Nonnull AbstractEntity entity) {
         if (entity.getScope() == Scope.SINGLETON && entity.getInstance() != null)
             return entity.getInstance();
 
