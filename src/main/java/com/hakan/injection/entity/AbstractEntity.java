@@ -1,6 +1,5 @@
 package com.hakan.injection.entity;
 
-import com.hakan.injection.utils.AnnotationUtils;
 import com.hakan.injection.annotations.Component;
 import com.hakan.injection.annotations.Provide;
 import com.hakan.injection.annotations.Service;
@@ -9,6 +8,7 @@ import com.hakan.injection.entity.impl.InjectorEntity;
 import com.hakan.injection.entity.impl.ProviderEntity;
 import com.hakan.injection.module.Module;
 import com.hakan.injection.reflection.Reflection;
+import com.hakan.injection.utils.AnnotationUtils;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
