@@ -3,6 +3,7 @@ package com.hakan.injection.entity;
 import com.hakan.injection.annotations.Component;
 import com.hakan.injection.annotations.Provide;
 import com.hakan.injection.annotations.Service;
+import com.hakan.injection.entity.impl.EmptyEntity;
 import com.hakan.injection.entity.impl.InjectorEntity;
 import com.hakan.injection.entity.impl.ProviderEntity;
 import com.hakan.injection.module.Module;
@@ -10,7 +11,6 @@ import com.hakan.injection.reflection.Reflection;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,24 +25,23 @@ import java.util.List;
 public abstract class AbstractEntity {
 
     /**
-     * Creates an entity with the class type
-     * and constructor which is annotated
-     * with @Autowired
+     * Creates an entity with the class type,
+     * and if constructor which is annotated
+     * with @Autowired exists, InjectorEntity
+     * will be created, otherwise EmptyEntity
      *
-     * @param module      module
-     * @param type        type
-     * @param constructor constructor
+     * @param module module
+     * @param type   type
      * @return entity
      */
     public static @Nonnull AbstractEntity byType(@Nonnull Module module,
-                                                 @Nonnull Class<?> type,
-                                                 @Nonnull Constructor<?> constructor) {
+                                                 @Nonnull Class<?> type) {
         if (type.isAnnotationPresent(Service.class))
-            return new InjectorEntity(module, type, constructor, type.getAnnotation(Service.class).scope());
+            return new InjectorEntity(module, type, type.getAnnotation(Service.class).scope());
         if (type.isAnnotationPresent(Component.class))
-            return new InjectorEntity(module, type, constructor, type.getAnnotation(Component.class).scope());
+            return new InjectorEntity(module, type, type.getAnnotation(Component.class).scope());
 
-        throw new RuntimeException("no @Service or @Component annotation found for class " + type.getName());
+        return new EmptyEntity(module, type);
     }
 
     /**
@@ -50,17 +49,15 @@ public abstract class AbstractEntity {
      * and method which is annotated with @Provide
      *
      * @param module module
-     * @param type   type
      * @param method method
      * @return entity
      */
     public static @Nonnull AbstractEntity byMethod(@Nonnull Module module,
-                                                   @Nonnull Class<?> type,
                                                    @Nonnull Method method) {
         if (!method.isAnnotationPresent(Provide.class))
             throw new RuntimeException("no @Provide annotation found for method " + method.getName());
 
-        return new ProviderEntity(module, type, method);
+        return new ProviderEntity(module, method);
     }
 
 

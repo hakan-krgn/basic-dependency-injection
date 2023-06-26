@@ -22,13 +22,11 @@ public class ProviderEntity extends AbstractEntity {
      * Constructor of {@link ProviderEntity}.
      *
      * @param module module
-     * @param type   type
      * @param method method
      */
     public ProviderEntity(@Nonnull Module module,
-                          @Nonnull Class<?> type,
                           @Nonnull Method method) {
-        super(module, type, Scope.SINGLETON);
+        super(module, method.getReturnType(), Scope.SINGLETON);
         this.method = method;
     }
 
@@ -49,6 +47,10 @@ public class ProviderEntity extends AbstractEntity {
     @Override
     @SneakyThrows
     public @Nonnull Object createInstance() {
+        if (super.instance != null && super.scope == Scope.SINGLETON)
+            return super.instance;
+
+
         Class<?>[] parameterTypes = this.method.getParameterTypes();
         Object[] parameters = new Object[parameterTypes.length];
 
@@ -59,7 +61,6 @@ public class ProviderEntity extends AbstractEntity {
             if (parameters[i] == null)
                 parameters[i] = super.module.createInstance(_entity);
         }
-
 
         super.parameters = parameters;
         super.instance = this.method.invoke(super.module, super.parameters);

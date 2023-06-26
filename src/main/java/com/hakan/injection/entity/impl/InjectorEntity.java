@@ -1,9 +1,11 @@
 package com.hakan.injection.entity.impl;
 
+import com.hakan.injection.annotations.Autowired;
 import com.hakan.injection.annotations.PostConstruct;
 import com.hakan.injection.entity.AbstractEntity;
 import com.hakan.injection.entity.Scope;
 import com.hakan.injection.module.Module;
+import com.hakan.injection.reflection.ReflectionUtils;
 import lombok.SneakyThrows;
 
 import javax.annotation.Nonnull;
@@ -22,17 +24,15 @@ public class InjectorEntity extends AbstractEntity {
     /**
      * Constructor of {@link InjectorEntity}.
      *
-     * @param module      module
-     * @param type        type
-     * @param constructor constructor
-     * @param scope       scope
+     * @param module module
+     * @param type   type
+     * @param scope  scope
      */
     public InjectorEntity(@Nonnull Module module,
                           @Nonnull Class<?> type,
-                          @Nonnull Constructor<?> constructor,
                           @Nonnull Scope scope) {
         super(module, type, scope);
-        this.constructor = constructor;
+        this.constructor = ReflectionUtils.getConstructor(type, Autowired.class);
     }
 
     /**
@@ -52,6 +52,10 @@ public class InjectorEntity extends AbstractEntity {
     @Override
     @SneakyThrows
     public @Nonnull Object createInstance() {
+        if (super.instance != null && super.scope == Scope.SINGLETON)
+            return super.instance;
+
+
         Class<?>[] parameterTypes = this.constructor.getParameterTypes();
         Object[] parameters = new Object[parameterTypes.length];
 
@@ -62,7 +66,6 @@ public class InjectorEntity extends AbstractEntity {
             if (parameters[i] == null)
                 parameters[i] = super.module.createInstance(_entity);
         }
-
 
         super.parameters = parameters;
         super.instance = this.constructor.newInstance(super.parameters);

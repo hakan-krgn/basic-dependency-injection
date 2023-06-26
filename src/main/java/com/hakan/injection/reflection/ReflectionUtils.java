@@ -3,13 +3,14 @@ package com.hakan.injection.reflection;
 import lombok.SneakyThrows;
 
 import javax.annotation.Nonnull;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 /**
  * ReflectionUtils is a utility class to
@@ -46,34 +47,17 @@ public class ReflectionUtils {
      */
     @SneakyThrows
     public static @Nonnull Set<Class<?>> findClasses(@Nonnull String basePackage) {
-        Set<Class<?>> classes = new HashSet<>();
-        BufferedReader reader = getReader(basePackage);
+        String jarPath = ReflectionUtils.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
-        String line;
-        while ((line = reader.readLine()) != null) {
-            if (!line.endsWith(".class")) classes.addAll(findClasses(basePackage + "." + line));
-            else classes.add(Class.forName(basePackage + "." + line.substring(0, line.lastIndexOf('.'))));
+        Set<Class<?>> classes = new HashSet<>();
+        ZipInputStream zip = new ZipInputStream(Files.newInputStream(Paths.get(jarPath)));
+        for (ZipEntry entry = zip.getNextEntry(); entry != null; entry = zip.getNextEntry()) {
+            if (!entry.isDirectory() && entry.getName().endsWith(".class")) {
+                String className = entry.getName().replace('/', '.');
+                classes.add(Class.forName(className.substring(0, className.length() - ".class".length())));
+            }
         }
 
         return classes;
-    }
-
-    /**
-     * Returns the reader for the given base package.
-     *
-     * @param basePackage the base package
-     * @return the reader
-     */
-    @SneakyThrows
-    private static @Nonnull BufferedReader getReader(@Nonnull String basePackage) {
-        InputStream stream = ClassLoader.getSystemClassLoader()
-                .getResourceAsStream(basePackage.replaceAll("[.]", "/"));
-
-        if (stream == null)
-            throw new RuntimeException("no package found for " + basePackage);
-        if (stream.available() == 0)
-            throw new RuntimeException("no class found for " + basePackage);
-
-        return new BufferedReader(new InputStreamReader(stream));
     }
 }

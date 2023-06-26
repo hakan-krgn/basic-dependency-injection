@@ -47,6 +47,7 @@ public class Reflection {
      */
     public @Nonnull Set<Field> getFieldsAnnotatedWith(@Nonnull Class<? extends Annotation> annotation) {
         return this.types.stream()
+                .filter(type -> !type.isAnnotation())
                 .flatMap(type -> Arrays.stream(type.getDeclaredFields()))
                 .filter(field -> field.isAnnotationPresent(annotation))
                 .collect(Collectors.toSet());
@@ -62,6 +63,7 @@ public class Reflection {
      */
     public @Nonnull Set<Method> getMethodsAnnotatedWith(@Nonnull Class<? extends Annotation> annotation) {
         return this.types.stream()
+                .filter(type -> !type.isAnnotation())
                 .flatMap(type -> Arrays.stream(type.getDeclaredMethods()))
                 .filter(method -> method.isAnnotationPresent(annotation))
                 .collect(Collectors.toSet());
@@ -77,6 +79,7 @@ public class Reflection {
      */
     public @Nonnull Set<Constructor<?>> getConstructorsAnnotatedWith(@Nonnull Class<? extends Annotation> annotation) {
         return this.types.stream()
+                .filter(type -> !type.isAnnotation())
                 .flatMap(type -> Arrays.stream(type.getDeclaredConstructors()))
                 .filter(constructor -> constructor.isAnnotationPresent(annotation))
                 .collect(Collectors.toSet());
@@ -92,6 +95,7 @@ public class Reflection {
      */
     public @Nonnull Set<Class<?>> getTypesAnnotatedWith(@Nonnull Class<? extends Annotation> annotation) {
         return this.types.stream()
+                .filter(type -> !type.isAnnotation())
                 .filter(type -> type.isAnnotationPresent(annotation))
                 .collect(Collectors.toSet());
     }

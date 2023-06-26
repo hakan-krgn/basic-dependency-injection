@@ -1,17 +1,14 @@
 package com.hakan.injection.module;
 
-import com.hakan.injection.annotations.Autowired;
 import com.hakan.injection.annotations.Provide;
 import com.hakan.injection.entity.AbstractEntity;
-import com.hakan.injection.entity.Scope;
+import com.hakan.injection.entity.impl.EmptyEntity;
 import com.hakan.injection.entity.impl.InjectorEntity;
 import com.hakan.injection.entity.impl.ProviderEntity;
 import com.hakan.injection.reflection.Reflection;
-import com.hakan.injection.reflection.ReflectionUtils;
 import lombok.SneakyThrows;
 
 import javax.annotation.Nonnull;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
@@ -62,18 +59,7 @@ public abstract class Module {
      * @return abstract entity
      */
     public final @Nonnull AbstractEntity bind(@Nonnull Class<?> clazz) {
-        return this.bind(ReflectionUtils.getConstructor(clazz, Autowired.class));
-    }
-
-    /**
-     * Creates an abstract entity from the
-     * constructor and binds it to the module.
-     *
-     * @param constructor constructor
-     * @return abstract entity
-     */
-    public final @Nonnull AbstractEntity bind(@Nonnull Constructor<?> constructor) {
-        return this.bind(AbstractEntity.byType(this, constructor.getDeclaringClass(), constructor));
+        return this.bind(AbstractEntity.byType(this, clazz));
     }
 
     /**
@@ -84,7 +70,7 @@ public abstract class Module {
      * @return abstract entity
      */
     public final @Nonnull AbstractEntity bind(@Nonnull Method method) {
-        return this.bind(AbstractEntity.byMethod(this, method.getReturnType(), method));
+        return this.bind(AbstractEntity.byMethod(this, method));
     }
 
     /**
@@ -146,10 +132,10 @@ public abstract class Module {
      */
     @SneakyThrows
     public @Nonnull Object createInstance(@Nonnull AbstractEntity entity) {
-        if (entity.getScope() == Scope.SINGLETON && entity.getInstance() != null)
-            return entity.getInstance();
-
-        if (entity instanceof InjectorEntity) {
+        if (entity instanceof EmptyEntity) {
+            EmptyEntity emptyEntity = (EmptyEntity) entity;
+            return emptyEntity.createInstance();
+        } else if (entity instanceof InjectorEntity) {
             InjectorEntity injectorEntity = (InjectorEntity) entity;
             return injectorEntity.createInstance();
         } else if (entity instanceof ProviderEntity) {
