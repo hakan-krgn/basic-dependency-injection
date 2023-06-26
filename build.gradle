@@ -35,10 +35,10 @@ publishing {
 artifacts.archives(tasks.shadowJar)
 
 tasks.jar {
-    enabled = false
+    enabled = true
 }
 
 tasks.shadowJar {
-    archiveFileName.set(rootProject.name + ".jar")
+    archiveFileName.set("${rootProject.name}-${rootProject.version}.jar")
 }
 
