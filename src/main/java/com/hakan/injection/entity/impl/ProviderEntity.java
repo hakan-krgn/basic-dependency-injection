@@ -59,6 +59,6 @@ public class ProviderEntity extends AbstractEntity {
                 parameters[i] = super.module.createInstance(_entity);
         }
 
-        return super.instance = this.method.invoke(super.module, this.parameters);
+        return super.instance = this.method.invoke(super.module, this.parameters = parameters);
     }
 }

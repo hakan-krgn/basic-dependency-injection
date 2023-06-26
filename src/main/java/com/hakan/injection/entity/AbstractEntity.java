@@ -56,7 +56,7 @@ public abstract class AbstractEntity {
     public static @Nonnull AbstractEntity byMethod(@Nonnull Module module,
                                                    @Nonnull Class<?> type,
                                                    @Nonnull Method method) {
-        if (!type.isAnnotationPresent(Provide.class))
+        if (!method.isAnnotationPresent(Provide.class))
             throw new RuntimeException("no @Provide annotation found for method " + method.getName());
 
         return new ProviderEntity(module, type, method);

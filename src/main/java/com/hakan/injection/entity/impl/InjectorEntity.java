@@ -61,6 +61,6 @@ public class InjectorEntity extends AbstractEntity {
                 parameters[i] = super.module.createInstance(_entity);
         }
 
-        return super.instance = this.constructor.newInstance(this.parameters);
+        return super.instance = this.constructor.newInstance(this.parameters = parameters);
     }
 }

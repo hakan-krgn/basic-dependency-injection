@@ -1,0 +1,26 @@
+package com.hakan.test.service;
+
+import com.hakan.injection.annotations.Autowired;
+import com.hakan.injection.annotations.Service;
+import com.hakan.test.config.TestConfig;
+import com.hakan.test.item.TestItem;
+
+@Service
+public class TestService {
+
+    private final TestItem item;
+    private final TestConfig config;
+
+    @Autowired
+    public TestService(TestItem item,
+                       TestConfig config) {
+        this.item = item;
+        this.config = config;
+    }
+
+    public void send() {
+        System.out.println(this.item.getName());
+        System.out.println(this.config.getMessage1());
+        System.out.println(this.config.getMessage2());
+    }
+}
