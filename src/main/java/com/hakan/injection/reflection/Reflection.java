@@ -1,5 +1,7 @@
 package com.hakan.injection.reflection;
 
+import com.hakan.injection.utils.AnnotationUtils;
+
 import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -49,7 +51,7 @@ public class Reflection {
         return this.types.stream()
                 .filter(type -> !type.isAnnotation())
                 .flatMap(type -> Arrays.stream(type.getDeclaredFields()))
-                .filter(field -> field.isAnnotationPresent(annotation))
+                .filter(field -> AnnotationUtils.isPresent(field, annotation))
                 .collect(Collectors.toSet());
     }
 
@@ -65,7 +67,7 @@ public class Reflection {
         return this.types.stream()
                 .filter(type -> !type.isAnnotation())
                 .flatMap(type -> Arrays.stream(type.getDeclaredMethods()))
-                .filter(method -> method.isAnnotationPresent(annotation))
+                .filter(method -> AnnotationUtils.isPresent(method, annotation))
                 .collect(Collectors.toSet());
     }
 
@@ -81,7 +83,7 @@ public class Reflection {
         return this.types.stream()
                 .filter(type -> !type.isAnnotation())
                 .flatMap(type -> Arrays.stream(type.getDeclaredConstructors()))
-                .filter(constructor -> constructor.isAnnotationPresent(annotation))
+                .filter(constructor -> AnnotationUtils.isPresent(constructor, annotation))
                 .collect(Collectors.toSet());
     }
 
@@ -96,7 +98,7 @@ public class Reflection {
     public @Nonnull Set<Class<?>> getTypesAnnotatedWith(@Nonnull Class<? extends Annotation> annotation) {
         return this.types.stream()
                 .filter(type -> !type.isAnnotation())
-                .filter(type -> type.isAnnotationPresent(annotation))
+                .filter(type -> AnnotationUtils.isPresent(type, annotation))
                 .collect(Collectors.toSet());
     }
 

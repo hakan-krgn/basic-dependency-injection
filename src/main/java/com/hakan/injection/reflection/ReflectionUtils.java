@@ -1,5 +1,6 @@
 package com.hakan.injection.reflection;
 
+import com.hakan.injection.utils.AnnotationUtils;
 import lombok.SneakyThrows;
 
 import javax.annotation.Nonnull;
@@ -32,7 +33,7 @@ public class ReflectionUtils {
     public static Constructor<?> getConstructor(@Nonnull Class<?> type,
                                                 @Nonnull Class<? extends Annotation> annotation) {
         for (Constructor<?> constructor : type.getDeclaredConstructors())
-            if (constructor.isAnnotationPresent(annotation))
+            if (AnnotationUtils.isPresent(constructor, annotation))
                 return constructor;
         return type.getDeclaredConstructor();
     }

@@ -1,5 +1,6 @@
 package com.hakan.injection.entity;
 
+import com.hakan.injection.utils.AnnotationUtils;
 import com.hakan.injection.annotations.Component;
 import com.hakan.injection.annotations.Provide;
 import com.hakan.injection.annotations.Service;
@@ -36,10 +37,10 @@ public abstract class AbstractEntity {
      */
     public static @Nonnull AbstractEntity byType(@Nonnull Module module,
                                                  @Nonnull Class<?> type) {
-        if (type.isAnnotationPresent(Service.class))
-            return new InjectorEntity(module, type, type.getAnnotation(Service.class).scope());
-        if (type.isAnnotationPresent(Component.class))
-            return new InjectorEntity(module, type, type.getAnnotation(Component.class).scope());
+        if (AnnotationUtils.isPresent(type, Service.class))
+            return new InjectorEntity(module, type, AnnotationUtils.find(type, Service.class).scope());
+        if (AnnotationUtils.isPresent(type, Component.class))
+            return new InjectorEntity(module, type, AnnotationUtils.find(type, Component.class).scope());
 
         return new EmptyEntity(module, type);
     }
@@ -54,7 +55,7 @@ public abstract class AbstractEntity {
      */
     public static @Nonnull AbstractEntity byMethod(@Nonnull Module module,
                                                    @Nonnull Method method) {
-        if (!method.isAnnotationPresent(Provide.class))
+        if (!AnnotationUtils.isPresent(method, Provide.class))
             throw new RuntimeException("no @Provide annotation found for method " + method.getName());
 
         return new ProviderEntity(module, method);
