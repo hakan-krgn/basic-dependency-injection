@@ -30,8 +30,8 @@ public class ReflectionUtils {
      * @return the constructor
      */
     @SneakyThrows
-    public static Constructor<?> getConstructor(@Nonnull Class<?> type,
-                                                @Nonnull Class<? extends Annotation> annotation) {
+    public static @Nonnull Constructor<?> getConstructor(@Nonnull Class<?> type,
+                                                         @Nonnull Class<? extends Annotation> annotation) {
         for (Constructor<?> constructor : type.getDeclaredConstructors())
             if (AnnotationUtils.isPresent(constructor, annotation))
                 return constructor;
