@@ -6,6 +6,7 @@ import com.hakan.injection.annotations.Service;
 import com.hakan.injection.entity.impl.InjectorEntity;
 import com.hakan.injection.entity.impl.ProviderEntity;
 import com.hakan.injection.module.Module;
+import com.hakan.injection.reflection.Reflection;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -68,6 +69,7 @@ public abstract class AbstractEntity {
     protected Scope scope;
     protected Object instance;
     protected Object[] parameters;
+    protected Reflection reflection;
 
     protected Class<?> type;
     protected List<Class<?>> subTypes;
@@ -86,6 +88,7 @@ public abstract class AbstractEntity {
         this.scope = scope;
         this.module = module;
         this.subTypes = new ArrayList<>();
+        this.reflection = new Reflection(type);
         this.subTypes.add(type.getSuperclass());
         this.subTypes.addAll(Arrays.asList(type.getInterfaces()));
     }

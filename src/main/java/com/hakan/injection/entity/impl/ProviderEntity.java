@@ -1,5 +1,6 @@
 package com.hakan.injection.entity.impl;
 
+import com.hakan.injection.annotations.PostConstruct;
 import com.hakan.injection.entity.AbstractEntity;
 import com.hakan.injection.entity.Scope;
 import com.hakan.injection.module.Module;
@@ -59,6 +60,13 @@ public class ProviderEntity extends AbstractEntity {
                 parameters[i] = super.module.createInstance(_entity);
         }
 
-        return super.instance = this.method.invoke(super.module, this.parameters = parameters);
+
+        super.parameters = parameters;
+        super.instance = this.method.invoke(super.module, super.parameters);
+
+        for (Method method : super.reflection.getMethodsAnnotatedWith(PostConstruct.class))
+            method.invoke(super.instance);
+
+        return super.instance;
     }
 }

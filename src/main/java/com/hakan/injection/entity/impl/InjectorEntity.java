@@ -1,5 +1,6 @@
 package com.hakan.injection.entity.impl;
 
+import com.hakan.injection.annotations.PostConstruct;
 import com.hakan.injection.entity.AbstractEntity;
 import com.hakan.injection.entity.Scope;
 import com.hakan.injection.module.Module;
@@ -7,6 +8,7 @@ import lombok.SneakyThrows;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
 /**
  * InjectorEntity is an entity class that
@@ -61,6 +63,13 @@ public class InjectorEntity extends AbstractEntity {
                 parameters[i] = super.module.createInstance(_entity);
         }
 
-        return super.instance = this.constructor.newInstance(this.parameters = parameters);
+
+        super.parameters = parameters;
+        super.instance = this.constructor.newInstance(super.parameters);
+
+        for (Method method : super.reflection.getMethodsAnnotatedWith(PostConstruct.class))
+            method.invoke(super.instance);
+
+        return super.instance;
     }
 }
