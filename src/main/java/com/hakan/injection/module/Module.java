@@ -37,18 +37,6 @@ public abstract class Module {
     }
 
     /**
-     * Gets the instance of the
-     * entity by the class type.
-     *
-     * @param clazz class type
-     * @param <T>   type
-     * @return instance
-     */
-    public final @Nonnull <T> T getInstance(@Nonnull Class<? extends T> clazz) {
-        return (T) this.getEntityByClass(clazz).getInstance();
-    }
-
-    /**
      * Creates an abstract entity from the
      * class and binds it to the module.
      *
@@ -101,14 +89,17 @@ public abstract class Module {
     }
 
 
-
     /**
-     * Configures the module
-     * by binding the entities.
+     * Gets the instance of the
+     * entity by the class type.
+     *
+     * @param clazz class type
+     * @param <T>   type
+     * @return instance
      */
-    public abstract void configure();
-
-
+    public final @Nonnull <T> T getInstance(@Nonnull Class<? extends T> clazz) {
+        return (T) this.getEntity(clazz).getInstance();
+    }
 
     /**
      * Gets the entity by the class type.
@@ -116,10 +107,18 @@ public abstract class Module {
      * @param clazz class type
      * @return entity
      */
-    public @Nonnull AbstractEntity getEntityByClass(@Nonnull Class<?> clazz) {
+    public final @Nonnull AbstractEntity getEntity(@Nonnull Class<?> clazz) {
         return this.entities.stream()
                 .filter(entity -> entity.getType().equals(clazz) || entity.getSubTypes().contains(clazz))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("no inject entity found for class " + clazz.getName()));
     }
+
+
+
+    /**
+     * Configures the module
+     * by binding the entities.
+     */
+    public abstract void configure();
 }

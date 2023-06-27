@@ -55,7 +55,7 @@ public class ProviderEntity extends AbstractEntity {
         Object[] parameters = new Object[parameterTypes.length];
 
         for (int i = 0; i < parameterTypes.length; i++) {
-            AbstractEntity _entity = super.module.getEntityByClass(parameterTypes[i]);
+            AbstractEntity _entity = super.module.getEntity(parameterTypes[i]);
             parameters[i] = _entity.getInstance();
         }
 
