@@ -48,12 +48,13 @@ public class ReflectionUtils {
      */
     @SneakyThrows
     public static @Nonnull Set<Class<?>> findClasses(@Nonnull String basePackage) {
+        String packagePath = basePackage.replace('.', System.getProperty("file.separator").charAt(0));
         String jarPath = ReflectionUtils.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         Set<Class<?>> classes = new HashSet<>();
         ZipInputStream zip = new ZipInputStream(Files.newInputStream(Paths.get(jarPath)));
         for (ZipEntry entry = zip.getNextEntry(); entry != null; entry = zip.getNextEntry()) {
-            if (!entry.isDirectory() && entry.getName().endsWith(".class")) {
+            if (entry.getName().startsWith(packagePath) && !entry.isDirectory() && entry.getName().endsWith(".class")) {
                 String className = entry.getName().replace('/', '.');
                 classes.add(Class.forName(className.substring(0, className.length() - ".class".length())));
             }

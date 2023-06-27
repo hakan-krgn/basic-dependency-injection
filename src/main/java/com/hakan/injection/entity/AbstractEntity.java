@@ -20,7 +20,6 @@ public abstract class AbstractEntity {
     protected Module module;
     protected Scope scope;
     protected Object instance;
-    protected Object[] parameters;
     protected Reflection reflection;
 
     protected Class<?> type;
@@ -53,16 +52,9 @@ public abstract class AbstractEntity {
      * @return instance
      */
     public final Object getInstance() {
-        return (this.scope == Scope.SINGLETON) ? this.instance : this.createInstance();
-    }
-
-    /**
-     * Returns the parameters of the class.
-     *
-     * @return parameters
-     */
-    public final @Nullable Object[] getParameters() {
-        return this.parameters;
+        if (this.instance == null || this.scope == Scope.PROTOTYPE)
+            return this.createInstance();
+        return this.instance;
     }
 
     /**
@@ -122,17 +114,6 @@ public abstract class AbstractEntity {
     public final @Nonnull AbstractEntity withInstance(@Nonnull Object instance) {
         this.instance = instance;
         return this.withScope(Scope.SINGLETON);
-    }
-
-    /**
-     * Sets the parameters of the class.
-     *
-     * @param parameters parameters
-     * @return entity
-     */
-    public final @Nonnull AbstractEntity withParameters(@Nonnull Object[] parameters) {
-        this.parameters = parameters;
-        return this;
     }
 
     /**

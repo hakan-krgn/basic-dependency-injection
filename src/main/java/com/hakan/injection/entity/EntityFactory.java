@@ -12,7 +12,7 @@ import com.hakan.injection.utils.AnnotationUtils;
 import javax.annotation.Nonnull;
 import java.lang.reflect.Method;
 
-public class AbstractEntityFactory {
+public class EntityFactory {
 
     /**
      * Creates an entity with the class type,

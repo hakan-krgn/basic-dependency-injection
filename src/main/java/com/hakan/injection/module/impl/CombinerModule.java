@@ -48,9 +48,6 @@ public class CombinerModule extends Module {
      */
     @Override
     public void configure() {
-        for (Module module : this.modules) {
-            module.configure();
-            this.install(module);
-        }
+        this.modules.forEach(this::install);
     }
 }

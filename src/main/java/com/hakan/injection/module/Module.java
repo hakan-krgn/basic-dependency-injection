@@ -2,12 +2,8 @@ package com.hakan.injection.module;
 
 import com.hakan.injection.annotations.Provide;
 import com.hakan.injection.entity.AbstractEntity;
-import com.hakan.injection.entity.AbstractEntityFactory;
-import com.hakan.injection.entity.impl.EmptyEntity;
-import com.hakan.injection.entity.impl.InjectorEntity;
-import com.hakan.injection.entity.impl.ProviderEntity;
+import com.hakan.injection.entity.EntityFactory;
 import com.hakan.injection.reflection.Reflection;
-import lombok.SneakyThrows;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Method;
@@ -60,7 +56,7 @@ public abstract class Module {
      * @return abstract entity
      */
     public final @Nonnull AbstractEntity bind(@Nonnull Class<?> clazz) {
-        return this.bind(AbstractEntityFactory.create(this, clazz));
+        return this.bind(EntityFactory.create(this, clazz));
     }
 
     /**
@@ -71,7 +67,7 @@ public abstract class Module {
      * @return abstract entity
      */
     public final @Nonnull AbstractEntity bind(@Nonnull Method method) {
-        return this.bind(AbstractEntityFactory.create(this, method));
+        return this.bind(EntityFactory.create(this, method));
     }
 
     /**
@@ -92,6 +88,7 @@ public abstract class Module {
      * @param module module to install
      */
     public final void install(@Nonnull Module module) {
+        module.configure();
         this.entities.addAll(module.entities);
     }
 
@@ -100,8 +97,9 @@ public abstract class Module {
      * that are bound to the module.
      */
     public final void create() {
-        this.entities.forEach(this::createInstance);
+        this.entities.forEach(AbstractEntity::createInstance);
     }
+
 
 
     /**
@@ -123,27 +121,5 @@ public abstract class Module {
                 .filter(entity -> entity.getType().equals(clazz) || entity.getSubTypes().contains(clazz))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("no inject entity found for class " + clazz.getName()));
-    }
-
-    /**
-     * Creates an instance of the entity.
-     *
-     * @param entity entity
-     * @return instance
-     */
-    @SneakyThrows
-    public @Nonnull Object createInstance(@Nonnull AbstractEntity entity) {
-        if (entity instanceof EmptyEntity) {
-            EmptyEntity emptyEntity = (EmptyEntity) entity;
-            return emptyEntity.createInstance();
-        } else if (entity instanceof InjectorEntity) {
-            InjectorEntity injectorEntity = (InjectorEntity) entity;
-            return injectorEntity.createInstance();
-        } else if (entity instanceof ProviderEntity) {
-            ProviderEntity providerEntity = (ProviderEntity) entity;
-            return providerEntity.createInstance();
-        }
-
-        throw new RuntimeException("unknown entity type " + entity.getClass().getName());
     }
 }

@@ -3,7 +3,6 @@ package com.hakan.injection.entity.impl;
 import com.hakan.injection.entity.AbstractEntity;
 import com.hakan.injection.entity.Scope;
 import com.hakan.injection.module.Module;
-import lombok.SneakyThrows;
 
 import javax.annotation.Nonnull;
 
@@ -31,7 +30,6 @@ public class EmptyEntity extends AbstractEntity {
      * {@inheritDoc}
      */
     @Override
-    @SneakyThrows
     public @Nonnull Object createInstance() {
         return super.instance;
     }
