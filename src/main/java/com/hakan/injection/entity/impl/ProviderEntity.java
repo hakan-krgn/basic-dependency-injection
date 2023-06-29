@@ -8,6 +8,7 @@ import lombok.SneakyThrows;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 /**
  * ProviderEntity is an entity class that
@@ -17,6 +18,7 @@ import java.lang.reflect.Method;
 public class ProviderEntity extends AbstractEntity {
 
     private final Method method;
+    private final Object methodInstance;
 
     /**
      * Constructor of {@link ProviderEntity}.
@@ -28,6 +30,7 @@ public class ProviderEntity extends AbstractEntity {
                           @Nonnull Method method) {
         super(module, method.getReturnType(), Scope.SINGLETON);
         this.method = method;
+        this.methodInstance = module;
     }
 
     /**
@@ -51,15 +54,11 @@ public class ProviderEntity extends AbstractEntity {
             return super.instance;
 
 
-        Class<?>[] parameterTypes = this.method.getParameterTypes();
-        Object[] parameters = new Object[parameterTypes.length];
+        Object[] parameters = Arrays.stream(this.method.getParameterTypes())
+                .map(parameterType -> super.module.getEntity(parameterType).getInstance())
+                .toArray();
 
-        for (int i = 0; i < parameterTypes.length; i++) {
-            AbstractEntity _entity = super.module.getEntity(parameterTypes[i]);
-            parameters[i] = _entity.getInstance();
-        }
-
-        super.instance = this.method.invoke(super.module, parameters);
+        super.instance = this.method.invoke(this.methodInstance, parameters);
         for (Method method : super.reflection.getMethodsAnnotatedWith(PostConstruct.class))
             method.invoke(super.instance);
 

@@ -77,6 +77,8 @@ public abstract class Module {
      */
     public final void install(@Nonnull Module module) {
         module.configure();
+        module.entities.forEach(entity -> entity.withModule(this));
+
         this.entities.addAll(module.entities);
     }
 

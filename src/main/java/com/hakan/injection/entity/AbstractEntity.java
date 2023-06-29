@@ -50,7 +50,7 @@ public abstract class AbstractEntity {
      *
      * @return instance
      */
-    public final Object getInstance() {
+    public final @Nonnull Object getInstance() {
         if (this.instance == null || this.scope == Scope.PROTOTYPE)
             return this.createInstance();
         return this.instance;
@@ -92,6 +92,17 @@ public abstract class AbstractEntity {
         return this.subTypes;
     }
 
+
+    /**
+     * Sets the module of the class.
+     *
+     * @param module module
+     * @return entity
+     */
+    public final @Nonnull AbstractEntity withModule(@Nonnull Module module) {
+        this.module = module;
+        return this;
+    }
 
     /**
      * Sets the scope of the class.

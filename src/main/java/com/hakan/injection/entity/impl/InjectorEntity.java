@@ -11,6 +11,7 @@ import lombok.SneakyThrows;
 import javax.annotation.Nonnull;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 /**
  * InjectorEntity is an entity class that
@@ -56,13 +57,9 @@ public class InjectorEntity extends AbstractEntity {
             return super.instance;
 
 
-        Class<?>[] parameterTypes = this.constructor.getParameterTypes();
-        Object[] parameters = new Object[parameterTypes.length];
-
-        for (int i = 0; i < parameterTypes.length; i++) {
-            AbstractEntity _entity = super.module.getEntity(parameterTypes[i]);
-            parameters[i] = _entity.getInstance();
-        }
+        Object[] parameters = Arrays.stream(this.constructor.getParameterTypes())
+                .map(parameterType -> super.module.getEntity(parameterType).getInstance())
+                .toArray();
 
         super.instance = this.constructor.newInstance(parameters);
         for (Method method : super.reflection.getMethodsAnnotatedWith(PostConstruct.class))
