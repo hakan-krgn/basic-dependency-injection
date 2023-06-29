@@ -61,10 +61,6 @@ public class InjectorEntity extends AbstractEntity {
                 .map(parameterType -> super.module.getEntity(parameterType).getInstance())
                 .toArray();
 
-        super.instance = this.constructor.newInstance(parameters);
-        for (Method method : super.reflection.getMethodsAnnotatedWith(PostConstruct.class))
-            method.invoke(super.instance);
-
-        return super.instance;
+        return super.instance = this.constructor.newInstance(parameters);
     }
 }

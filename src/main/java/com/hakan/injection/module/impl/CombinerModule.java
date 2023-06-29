@@ -4,9 +4,9 @@ import com.hakan.injection.module.Module;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * CombinerModule is a module class that
@@ -31,7 +31,7 @@ public class CombinerModule extends Module {
      * @param modules modules
      */
     public CombinerModule(@Nonnull List<Module> modules) {
-        this(new TreeSet<>(modules));
+        this(new HashSet<>(modules));
     }
 
     /**

@@ -18,7 +18,7 @@ public class Injector {
      * @return new instance of {@link Injector}
      */
     public static @Nonnull Injector of(@Nonnull Module... modules) {
-        return new Injector(new CombinerModule(modules)).init();
+        return new Injector(new CombinerModule(modules)).configure();
     }
 
 
@@ -45,16 +45,21 @@ public class Injector {
         return this.module.getInstance(clazz);
     }
 
-
-
     /**
      * Initializes the {@link Injector}.
      *
      * @return this
      */
-    private @Nonnull Injector init() {
+    public @Nonnull Injector configure() {
         this.module.configure();
-        this.module.create();
         return this;
+    }
+
+    /**
+     * Creates all instances of the entities
+     * that are bound to this injector.
+     */
+    public void createInstances() {
+        this.module.createInstances();
     }
 }
