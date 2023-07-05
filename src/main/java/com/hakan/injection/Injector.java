@@ -58,8 +58,11 @@ public class Injector {
     /**
      * Creates all instances of the entities
      * that are bound to this injector.
+     *
+     * @return this
      */
-    public void createInstances() {
-        this.module.createInstances();
+    public @Nonnull Injector create() {
+        this.module.create();
+        return this;
     }
 }

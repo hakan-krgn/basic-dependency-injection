@@ -90,7 +90,7 @@ public abstract class Module {
      * that are bound to the module.
      */
     @SneakyThrows
-    public final void createInstances() {
+    public final void create() {
         for (AbstractEntity entity : this.entities) {
             Object instance = entity.createInstance();
             Reflection reflection = new Reflection(instance.getClass());
