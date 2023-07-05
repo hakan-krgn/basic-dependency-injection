@@ -32,7 +32,7 @@ You can include Basic Dependency Injection in your project by adding the followi
     <dependency>
         <groupId>com.github.hakan-krgn</groupId>
         <artifactId>basic-dependency-injection</artifactId>
-        <version>0.0.4.2</version>
+        <version>0.0.4.3</version>
         <scope>compile</scope>
     </dependency>
 </dependencies>
@@ -46,7 +46,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.hakan-krgn:basic-dependency-injection:0.0.4.2'
+    implementation 'com.github.hakan-krgn:basic-dependency-injection:0.0.4.3'
 }
 ```
 
