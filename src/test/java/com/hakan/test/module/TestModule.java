@@ -1,7 +1,7 @@
 package com.hakan.test.module;
 
-import com.hakan.injection.annotations.Provide;
-import com.hakan.injection.module.Module;
+import com.hakan.basicdi.annotations.Provide;
+import com.hakan.basicdi.module.Module;
 import com.hakan.test.config.TestConfig;
 import com.hakan.test.item.TestItem;
 import com.hakan.test.service.TestService;

@@ -1,8 +1,8 @@
-package com.hakan.injection.entity.impl;
+package com.hakan.basicdi.entity.impl;
 
-import com.hakan.injection.entity.AbstractEntity;
-import com.hakan.injection.entity.Scope;
-import com.hakan.injection.module.Module;
+import com.hakan.basicdi.entity.AbstractEntity;
+import com.hakan.basicdi.entity.Scope;
+import com.hakan.basicdi.module.Module;
 import lombok.SneakyThrows;
 
 import javax.annotation.Nonnull;

@@ -1,13 +1,13 @@
-package com.hakan.injection.entity;
+package com.hakan.basicdi.entity;
 
-import com.hakan.injection.annotations.Component;
-import com.hakan.injection.annotations.Provide;
-import com.hakan.injection.annotations.Service;
-import com.hakan.injection.entity.impl.EmptyEntity;
-import com.hakan.injection.entity.impl.InjectorEntity;
-import com.hakan.injection.entity.impl.ProviderEntity;
-import com.hakan.injection.module.Module;
-import com.hakan.injection.utils.AnnotationUtils;
+import com.hakan.basicdi.annotations.Component;
+import com.hakan.basicdi.annotations.Provide;
+import com.hakan.basicdi.annotations.Service;
+import com.hakan.basicdi.entity.impl.EmptyEntity;
+import com.hakan.basicdi.entity.impl.InjectorEntity;
+import com.hakan.basicdi.entity.impl.ProviderEntity;
+import com.hakan.basicdi.module.Module;
+import com.hakan.basicdi.utils.AnnotationUtils;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Method;

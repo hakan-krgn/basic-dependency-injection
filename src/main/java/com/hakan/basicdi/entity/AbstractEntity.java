@@ -1,7 +1,7 @@
-package com.hakan.injection.entity;
+package com.hakan.basicdi.entity;
 
-import com.hakan.injection.module.Module;
-import com.hakan.injection.reflection.Reflection;
+import com.hakan.basicdi.module.Module;
+import com.hakan.basicdi.reflection.Reflection;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
-package com.hakan.injection.module.impl;
+package com.hakan.basicdi.module.impl;
 
-import com.hakan.injection.module.Module;
+import com.hakan.basicdi.module.Module;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;

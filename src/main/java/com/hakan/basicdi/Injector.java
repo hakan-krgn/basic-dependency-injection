@@ -1,7 +1,7 @@
-package com.hakan.injection;
+package com.hakan.basicdi;
 
-import com.hakan.injection.module.Module;
-import com.hakan.injection.module.impl.CombinerModule;
+import com.hakan.basicdi.module.Module;
+import com.hakan.basicdi.module.impl.CombinerModule;
 
 import javax.annotation.Nonnull;
 

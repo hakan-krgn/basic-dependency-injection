@@ -1,4 +1,4 @@
-package com.hakan.injection.utils;
+package com.hakan.basicdi.utils;
 
 import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;

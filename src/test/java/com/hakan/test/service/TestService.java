@@ -1,8 +1,8 @@
 package com.hakan.test.service;
 
-import com.hakan.injection.annotations.Autowired;
-import com.hakan.injection.annotations.PostConstruct;
-import com.hakan.injection.annotations.Service;
+import com.hakan.basicdi.annotations.Autowired;
+import com.hakan.basicdi.annotations.PostConstruct;
+import com.hakan.basicdi.annotations.Service;
 import com.hakan.test.config.TestConfig;
 import com.hakan.test.item.TestItem;
 

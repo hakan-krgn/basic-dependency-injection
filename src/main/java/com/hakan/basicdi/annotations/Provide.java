@@ -1,4 +1,4 @@
-package com.hakan.injection.annotations;
+package com.hakan.basicdi.annotations;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -7,12 +7,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Autowired annotation is used to inject
- * dependencies to constructor automatically.
+ * Provide annotation is used to specify
+ * the type of the method return value that
+ * will be injected to the class automatically.
  */
 @Documented
-@Target(ElementType.CONSTRUCTOR)
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Autowired {
+public @interface Provide {
 
 }

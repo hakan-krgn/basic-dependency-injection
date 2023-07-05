@@ -1,6 +1,6 @@
-package com.hakan.injection.annotations;
+package com.hakan.basicdi.annotations;
 
-import com.hakan.injection.entity.Scope;
+import com.hakan.basicdi.entity.Scope;
 
 import javax.annotation.Nonnull;
 import java.lang.annotation.Documented;

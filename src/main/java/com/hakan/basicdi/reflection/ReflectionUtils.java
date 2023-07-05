@@ -1,6 +1,6 @@
-package com.hakan.injection.reflection;
+package com.hakan.basicdi.reflection;
 
-import com.hakan.injection.utils.AnnotationUtils;
+import com.hakan.basicdi.utils.AnnotationUtils;
 import lombok.SneakyThrows;
 
 import javax.annotation.Nonnull;

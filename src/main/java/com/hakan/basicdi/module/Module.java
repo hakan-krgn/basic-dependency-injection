@@ -1,10 +1,10 @@
-package com.hakan.injection.module;
+package com.hakan.basicdi.module;
 
-import com.hakan.injection.annotations.PostConstruct;
-import com.hakan.injection.annotations.Provide;
-import com.hakan.injection.entity.AbstractEntity;
-import com.hakan.injection.entity.EntityFactory;
-import com.hakan.injection.reflection.Reflection;
+import com.hakan.basicdi.annotations.PostConstruct;
+import com.hakan.basicdi.annotations.Provide;
+import com.hakan.basicdi.entity.AbstractEntity;
+import com.hakan.basicdi.entity.EntityFactory;
+import com.hakan.basicdi.reflection.Reflection;
 import lombok.SneakyThrows;
 
 import javax.annotation.Nonnull;

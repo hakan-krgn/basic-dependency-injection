@@ -1,4 +1,4 @@
-package com.hakan.injection.entity;
+package com.hakan.basicdi.entity;
 
 public enum Scope {
 

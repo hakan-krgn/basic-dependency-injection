@@ -1,4 +1,4 @@
-package com.hakan.injection.annotations;
+package com.hakan.basicdi.annotations;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

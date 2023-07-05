@@ -1,16 +1,14 @@
-package com.hakan.injection.entity.impl;
+package com.hakan.basicdi.entity.impl;
 
-import com.hakan.injection.annotations.Autowired;
-import com.hakan.injection.annotations.PostConstruct;
-import com.hakan.injection.entity.AbstractEntity;
-import com.hakan.injection.entity.Scope;
-import com.hakan.injection.module.Module;
-import com.hakan.injection.reflection.ReflectionUtils;
+import com.hakan.basicdi.annotations.Autowired;
+import com.hakan.basicdi.entity.AbstractEntity;
+import com.hakan.basicdi.entity.Scope;
+import com.hakan.basicdi.module.Module;
+import com.hakan.basicdi.reflection.ReflectionUtils;
 import lombok.SneakyThrows;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.util.Arrays;
 
 /**
