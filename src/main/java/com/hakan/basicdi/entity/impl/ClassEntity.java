@@ -4,7 +4,6 @@ import com.hakan.basicdi.annotations.Autowired;
 import com.hakan.basicdi.entity.AbstractEntity;
 import com.hakan.basicdi.entity.Scope;
 import com.hakan.basicdi.module.Module;
-import com.hakan.basicdi.reflection.Reflection;
 import com.hakan.basicdi.reflection.ReflectionUtils;
 import lombok.SneakyThrows;
 
