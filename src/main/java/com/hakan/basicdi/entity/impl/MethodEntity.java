@@ -1,5 +1,6 @@
 package com.hakan.basicdi.entity.impl;
 
+import com.hakan.basicdi.annotations.Provide;
 import com.hakan.basicdi.entity.AbstractEntity;
 import com.hakan.basicdi.entity.Scope;
 import com.hakan.basicdi.module.Module;
@@ -10,23 +11,25 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 
 /**
- * ProviderEntity is an entity class that
- * contains method which is used to
- * provide dependencies to the class.
+ * MethodEntity is an entity class that
+ * contains method which is annotated
+ * with {@link Provide} annotation to
+ * create an instance of return type
+ * the method.
  */
-public class ProviderEntity extends AbstractEntity {
+public class MethodEntity extends AbstractEntity {
 
     private final Method method;
     private final Object methodInstance;
 
     /**
-     * Constructor of {@link ProviderEntity}.
+     * Constructor of {@link MethodEntity}.
      *
      * @param module module
      * @param method method
      */
-    public ProviderEntity(@Nonnull Module module,
-                          @Nonnull Method method) {
+    public MethodEntity(@Nonnull Module module,
+                        @Nonnull Method method) {
         super(module, method.getReturnType(), Scope.SINGLETON);
         this.method = method;
         this.methodInstance = module;
@@ -39,6 +42,15 @@ public class ProviderEntity extends AbstractEntity {
      */
     public @Nonnull Method getMethod() {
         return this.method;
+    }
+
+    /**
+     * Returns the method instance of the class.
+     *
+     * @return method instance
+     */
+    public @Nonnull Object getMethodInstance() {
+        return this.methodInstance;
     }
 
 
@@ -54,7 +66,7 @@ public class ProviderEntity extends AbstractEntity {
 
 
         Object[] parameters = Arrays.stream(this.method.getParameterTypes())
-                .map(parameterType -> super.module.getEntity(parameterType).getInstance())
+                .map(parameterType -> super.module.getInstance(parameterType))
                 .toArray();
 
         return super.instance = this.method.invoke(this.methodInstance, parameters);

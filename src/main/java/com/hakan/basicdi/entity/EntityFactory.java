@@ -4,8 +4,8 @@ import com.hakan.basicdi.annotations.Component;
 import com.hakan.basicdi.annotations.Provide;
 import com.hakan.basicdi.annotations.Service;
 import com.hakan.basicdi.entity.impl.EmptyEntity;
-import com.hakan.basicdi.entity.impl.InjectorEntity;
-import com.hakan.basicdi.entity.impl.ProviderEntity;
+import com.hakan.basicdi.entity.impl.ClassEntity;
+import com.hakan.basicdi.entity.impl.MethodEntity;
 import com.hakan.basicdi.module.Module;
 import com.hakan.basicdi.utils.AnnotationUtils;
 
@@ -27,9 +27,9 @@ public class EntityFactory {
     public static @Nonnull AbstractEntity create(@Nonnull Module module,
                                                  @Nonnull Class<?> type) {
         if (AnnotationUtils.isPresent(type, Service.class))
-            return new InjectorEntity(module, type, AnnotationUtils.find(type, Service.class).scope());
+            return new ClassEntity(module, type, AnnotationUtils.find(type, Service.class).scope());
         if (AnnotationUtils.isPresent(type, Component.class))
-            return new InjectorEntity(module, type, AnnotationUtils.find(type, Component.class).scope());
+            return new ClassEntity(module, type, AnnotationUtils.find(type, Component.class).scope());
 
         return new EmptyEntity(module, type);
     }
@@ -47,6 +47,6 @@ public class EntityFactory {
         if (!AnnotationUtils.isPresent(method, Provide.class))
             throw new RuntimeException("no @Provide annotation found for method " + method.getName());
 
-        return new ProviderEntity(module, method);
+        return new MethodEntity(module, method);
     }
 }

@@ -1,5 +1,7 @@
 package com.hakan.basicdi.entity.impl;
 
+import com.hakan.basicdi.annotations.Component;
+import com.hakan.basicdi.annotations.Service;
 import com.hakan.basicdi.entity.AbstractEntity;
 import com.hakan.basicdi.entity.Scope;
 import com.hakan.basicdi.module.Module;
@@ -7,9 +9,13 @@ import com.hakan.basicdi.module.Module;
 import javax.annotation.Nonnull;
 
 /**
- * InjectorEntity is an entity class that
+ * EmptyEntity is an entity class that
  * contains constructor which is used to
  * inject dependencies to the class.
+ * <p>
+ * This class of entity cannot have
+ * {@link Service} or {@link Component}
+ * annotation.
  */
 public class EmptyEntity extends AbstractEntity {
 

@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * dependencies to constructor automatically.
  */
 @Documented
-@Target(ElementType.CONSTRUCTOR)
+@Target({ElementType.CONSTRUCTOR, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Autowired {
 

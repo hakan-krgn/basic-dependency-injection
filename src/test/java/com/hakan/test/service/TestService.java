@@ -9,18 +9,18 @@ import com.hakan.test.item.TestItem;
 @Service
 public class TestService {
 
-    private final TestItem item;
-    private final TestConfig config;
+    @Autowired
+    private TestConfig config;
 
     @Autowired
-    public TestService(TestItem item,
-                       TestConfig config) {
-        this.item = item;
-        this.config = config;
-    }
+    private TestItem item;
+
 
     @PostConstruct
     public void init() {
+        System.out.println(this.item.getName());
+        System.out.println(this.config.getMessage1());
+        System.out.println(this.config.getMessage2());
         System.out.println("TestService is initialized.");
     }
 
@@ -29,5 +29,6 @@ public class TestService {
         System.out.println(this.item.getName());
         System.out.println(this.config.getMessage1());
         System.out.println(this.config.getMessage2());
+        System.out.println("TestService#send is called.");
     }
 }
