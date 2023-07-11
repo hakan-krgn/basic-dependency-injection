@@ -1,6 +1,5 @@
 package com.hakan.basicdi.module;
 
-import com.hakan.basicdi.annotations.PostConstruct;
 import com.hakan.basicdi.annotations.Provide;
 import com.hakan.basicdi.entity.AbstractEntity;
 import com.hakan.basicdi.entity.EntityFactory;
@@ -91,13 +90,7 @@ public abstract class Module {
      */
     @SneakyThrows
     public final void create() {
-        for (AbstractEntity entity : this.entities) {
-            Object instance = entity.createInstance();
-            Reflection reflection = new Reflection(instance.getClass());
-
-            for (Method method : reflection.getMethodsAnnotatedWith(PostConstruct.class))
-                method.invoke(instance);
-        }
+        this.entities.forEach(AbstractEntity::createInstance);
     }
 
 

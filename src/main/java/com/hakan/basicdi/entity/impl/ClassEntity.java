@@ -1,6 +1,7 @@
 package com.hakan.basicdi.entity.impl;
 
 import com.hakan.basicdi.annotations.Autowired;
+import com.hakan.basicdi.annotations.PostConstruct;
 import com.hakan.basicdi.entity.AbstractEntity;
 import com.hakan.basicdi.entity.Scope;
 import com.hakan.basicdi.module.Module;
@@ -10,6 +11,7 @@ import lombok.SneakyThrows;
 import javax.annotation.Nonnull;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Set;
 
@@ -22,6 +24,7 @@ import java.util.Set;
 public class ClassEntity extends AbstractEntity {
 
     private final Set<Field> fields;
+    private final Set<Method> postConstructMethods;
     private final Constructor<?> constructor;
 
     /**
@@ -36,6 +39,7 @@ public class ClassEntity extends AbstractEntity {
                        @Nonnull Scope scope) {
         super(module, type, scope);
         this.fields = super.reflection.getFieldsAnnotatedWith(Autowired.class);
+        this.postConstructMethods = super.reflection.getMethodsAnnotatedWith(PostConstruct.class);
         this.constructor = ReflectionUtils.getConstructor(type, Autowired.class);
     }
 
@@ -61,7 +65,6 @@ public class ClassEntity extends AbstractEntity {
     }
 
 
-
     /**
      * {@inheritDoc}
      */
@@ -81,6 +84,9 @@ public class ClassEntity extends AbstractEntity {
         for (Field field : this.fields) {
             field.setAccessible(true);
             field.set(super.instance, super.module.getInstance(field.getType()));
+        }
+        for (Method method : this.postConstructMethods) {
+            method.invoke(super.instance);
         }
 
         return super.instance;
