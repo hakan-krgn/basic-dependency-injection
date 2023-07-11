@@ -95,6 +95,15 @@ public abstract class Module {
 
 
     /**
+     * Gets the all entities of the module.
+     *
+     * @return entities
+     */
+    public @Nonnull Set<AbstractEntity> getEntities() {
+        return this.entities;
+    }
+
+    /**
      * Gets the instance of the
      * entity by the class type.
      *

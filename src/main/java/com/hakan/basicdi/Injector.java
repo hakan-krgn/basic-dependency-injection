@@ -35,6 +35,15 @@ public class Injector {
     }
 
     /**
+     * Gets the module of the {@link Injector}.
+     *
+     * @return module
+     */
+    public @Nonnull Module getModule() {
+        return this.module;
+    }
+
+    /**
      * Returns the instance of the given class.
      *
      * @param clazz class
