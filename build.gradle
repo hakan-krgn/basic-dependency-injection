@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.hakan'
-version '0.0.4.6'
+version '0.0.4.7'
 sourceCompatibility = 8
 compileJava.options.encoding = 'UTF-8'
 
@@ -41,4 +41,3 @@ tasks.jar {
 tasks.shadowJar {
     archiveFileName.set("${rootProject.name}-${rootProject.version}.jar")
 }
-
