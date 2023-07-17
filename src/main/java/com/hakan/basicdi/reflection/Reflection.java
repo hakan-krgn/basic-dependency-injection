@@ -6,7 +6,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -33,8 +32,8 @@ public class Reflection {
      *
      * @param clazz the class to scan
      */
-    public Reflection(@Nonnull Class<?> clazz) {
-        this.types = new HashSet<>(Collections.singletonList(clazz));
+    public Reflection(@Nonnull Class<?>... clazz) {
+        this.types = new HashSet<>(Arrays.asList(clazz));
     }
 
     /**
