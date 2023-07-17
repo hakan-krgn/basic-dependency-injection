@@ -5,6 +5,7 @@ import lombok.SneakyThrows;
 import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashSet;
@@ -37,7 +38,6 @@ public class ReflectionUtils {
         return type.getDeclaredConstructor();
     }
 
-
     /**
      * Scans everywhere in the given base package
      * and returns the classes which are found.
@@ -47,15 +47,17 @@ public class ReflectionUtils {
      */
     @SneakyThrows
     public static @Nonnull Set<Class<?>> findClasses(@Nonnull String basePackage) {
-        String packagePath = basePackage.replace('.', System.getProperty("file.separator").charAt(0));
-        String jarPath = ReflectionUtils.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-
         Set<Class<?>> classes = new HashSet<>();
+
+        String separator = System.getProperty("file.separator");
+        String packagePath = basePackage.replace(".", separator);
+        URI jarPath = ReflectionUtils.class.getProtectionDomain().getCodeSource().getLocation().toURI();
         ZipInputStream zip = new ZipInputStream(Files.newInputStream(Paths.get(jarPath)));
+
         for (ZipEntry entry = zip.getNextEntry(); entry != null; entry = zip.getNextEntry()) {
-            if (entry.getName().startsWith(packagePath) && !entry.isDirectory() && entry.getName().endsWith(".class")) {
-                String className = entry.getName().replace('/', '.');
-                classes.add(Class.forName(className.substring(0, className.length() - ".class".length())));
+            String className = entry.getName().replace("/", separator);
+            if (className.startsWith(packagePath) && className.endsWith(".class")) {
+                classes.add(Class.forName(className.replace(separator, ".").substring(0, className.length() - 6)));
             }
         }
 
