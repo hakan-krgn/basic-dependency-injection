@@ -4,8 +4,8 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
-group 'com.hakan'
-version '0.0.4.8'
+group 'com.hakan.basicdi'
+version '0.0.4.9'
 sourceCompatibility = 8
 compileJava.options.encoding = 'UTF-8'
 
@@ -15,9 +15,9 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'org.projectlombok:lombok:1.18.28'
     annotationProcessor 'org.projectlombok:lombok:1.18.28'
 
+    compileOnly 'org.projectlombok:lombok:1.18.28'
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
 }
 
