@@ -56,8 +56,12 @@ public class ReflectionUtils {
 
         for (ZipEntry entry = zip.getNextEntry(); entry != null; entry = zip.getNextEntry()) {
             String className = entry.getName().replace("/", separator);
-            if (className.startsWith(packagePath) && className.endsWith(".class")) {
+            if (!className.startsWith(packagePath) || !className.endsWith(".class")) continue;
+
+            try {
                 classes.add(Class.forName(className.replace(separator, ".").substring(0, className.length() - 6)));
+            } catch (Error | Exception ignored) {
+
             }
         }
 
