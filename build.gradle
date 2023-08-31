@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'maven-publish'
-    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 group 'com.hakan.basicdi'
@@ -19,7 +19,6 @@ dependencies {
 
     compileOnly 'org.projectlombok:lombok:1.18.28'
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
-
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
