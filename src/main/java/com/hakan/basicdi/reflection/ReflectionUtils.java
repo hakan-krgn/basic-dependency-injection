@@ -3,15 +3,14 @@ package com.hakan.basicdi.reflection;
 import lombok.SneakyThrows;
 
 import javax.annotation.Nonnull;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
-import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
+import java.util.function.Consumer;
 
 /**
  * ReflectionUtils is a utility class to
@@ -49,22 +48,36 @@ public class ReflectionUtils {
     public static @Nonnull Set<Class<?>> findClasses(@Nonnull String basePackage) {
         Set<Class<?>> classes = new HashSet<>();
 
-        String separator = System.getProperty("file.separator");
-        String packagePath = basePackage.replace(".", separator);
-        URI jarPath = ReflectionUtils.class.getProtectionDomain().getCodeSource().getLocation().toURI();
-        ZipInputStream zip = new ZipInputStream(Files.newInputStream(Paths.get(jarPath)));
+        InputStream stream = ClassLoader.getSystemClassLoader()
+                .getResourceAsStream(basePackage.replaceAll("[.]", "/"));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 
-        for (ZipEntry entry = zip.getNextEntry(); entry != null; entry = zip.getNextEntry()) {
-            String className = entry.getName().replace("/", separator);
-            if (!className.startsWith(packagePath) || !className.endsWith(".class")) continue;
-
-            try {
-                classes.add(Class.forName(className.replace(separator, ".").substring(0, className.length() - 6)));
-            } catch (Error | Exception ignored) {
-
-            }
-        }
+        reader.lines().forEach(_className -> {
+            String className = basePackage + "." + _className.replace(".class", "");
+            loadClass(className, classes::add, () -> classes.addAll(findClasses(className)));
+        });
 
         return classes;
+    }
+
+
+    /**
+     * Loads the class from the given class name
+     * and calls the given {@link Consumer} if
+     * the class is found, otherwise calls the
+     * given {@link Runnable}.
+     *
+     * @param className class name
+     * @param present   consumer
+     * @param absent    runnable
+     */
+    private static void loadClass(@Nonnull String className,
+                                  @Nonnull Consumer<Class<?>> present,
+                                  @Nonnull Runnable absent) {
+        try {
+            present.accept(Class.forName(className));
+        } catch (ClassNotFoundException e) {
+            absent.run();
+        }
     }
 }
