@@ -1,7 +1,7 @@
 plugins {
-	id 'java'
-	id 'maven-publish'
-	id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'java'
+    id 'maven-publish'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 group 'com.hakan.basicdi'
@@ -10,41 +10,42 @@ sourceCompatibility = 8
 compileJava.options.encoding = 'UTF-8'
 
 repositories {
-	mavenCentral()
-	maven { url 'https://jitpack.io' }
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
-	annotationProcessor 'org.projectlombok:lombok:1.18.28'
+    annotationProcessor 'org.projectlombok:lombok:1.18.28'
 
-	compileOnly 'org.projectlombok:lombok:1.18.28'
-	implementation 'com.google.code.findbugs:jsr305:3.0.2'
+    compileOnly 'org.projectlombok:lombok:1.18.28'
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
 
-	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
-	testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
 publishing {
-	publications {
-		maven(MavenPublication) {
-			groupId = project.group
-			version = project.version
-			artifactId = project.name
-			from components.java
-		}
-	}
+    publications {
+        maven(MavenPublication) {
+            groupId = project.group
+            version = project.version
+            artifactId = project.name
+            from components.java
+        }
+    }
 }
 
 artifacts.archives(tasks.shadowJar)
 
 tasks.jar {
-	enabled = true
+    enabled = true
 }
 
 tasks.shadowJar {
-	archiveFileName.set("${rootProject.name}-${rootProject.version}.jar")
+    archiveFileName.set("${rootProject.name}-${rootProject.version}.jar")
 }

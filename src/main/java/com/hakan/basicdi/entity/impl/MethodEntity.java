@@ -19,56 +19,56 @@ import java.util.Arrays;
  */
 public class MethodEntity extends AbstractEntity {
 
-	private final Method method;
-	private final Object methodInstance;
+    private final Method method;
+    private final Object methodInstance;
 
-	/**
-	 * Constructor of {@link MethodEntity}.
-	 *
-	 * @param module module
-	 * @param method method
-	 */
-	public MethodEntity(@Nonnull Module module,
-						@Nonnull Method method) {
-		super(module, method.getReturnType(), Scope.SINGLETON);
-		this.method = method;
-		this.methodInstance = module;
-	}
+    /**
+     * Constructor of {@link MethodEntity}.
+     *
+     * @param module module
+     * @param method method
+     */
+    public MethodEntity(@Nonnull Module module,
+                        @Nonnull Method method) {
+        super(module, method.getReturnType(), Scope.SINGLETON);
+        this.method = method;
+        this.methodInstance = module;
+    }
 
-	/**
-	 * Returns the method of the class.
-	 *
-	 * @return method
-	 */
-	public @Nonnull Method getMethod() {
-		return this.method;
-	}
+    /**
+     * Returns the method of the class.
+     *
+     * @return method
+     */
+    public @Nonnull Method getMethod() {
+        return this.method;
+    }
 
-	/**
-	 * Returns the method instance of the class.
-	 *
-	 * @return method instance
-	 */
-	public @Nonnull Object getMethodInstance() {
-		return this.methodInstance;
-	}
-
-
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	@SneakyThrows
-	public @Nonnull Object createInstance() {
-		if (super.scope == Scope.SINGLETON && super.instance != null)
-			return super.instance;
+    /**
+     * Returns the method instance of the class.
+     *
+     * @return method instance
+     */
+    public @Nonnull Object getMethodInstance() {
+        return this.methodInstance;
+    }
 
 
-		Object[] parameters = Arrays.stream(this.method.getParameterTypes())
-			.map(parameterType -> super.module.getInstance(parameterType))
-			.toArray();
 
-		return super.instance = this.method.invoke(this.methodInstance, parameters);
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @SneakyThrows
+    public @Nonnull Object createInstance() {
+        if (super.scope == Scope.SINGLETON && super.instance != null)
+            return super.instance;
+
+
+        Object[] parameters = Arrays.stream(this.method.getParameterTypes())
+                .map(parameterType -> super.module.getInstance(parameterType))
+                .toArray();
+
+        return super.instance = this.method.invoke(this.methodInstance, parameters);
+    }
 }

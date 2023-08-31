@@ -14,40 +14,40 @@ import java.util.Set;
  */
 public class CombinerModule extends Module {
 
-	private final Set<Module> modules;
+    private final Set<Module> modules;
 
-	/**
-	 * Constructor of {@link CombinerModule}.
-	 *
-	 * @param modules modules
-	 */
-	public CombinerModule(@Nonnull Module... modules) {
-		this(Arrays.asList(modules));
-	}
+    /**
+     * Constructor of {@link CombinerModule}.
+     *
+     * @param modules modules
+     */
+    public CombinerModule(@Nonnull Module... modules) {
+        this(Arrays.asList(modules));
+    }
 
-	/**
-	 * Constructor of {@link CombinerModule}.
-	 *
-	 * @param modules modules
-	 */
-	public CombinerModule(@Nonnull List<Module> modules) {
-		this(new HashSet<>(modules));
-	}
+    /**
+     * Constructor of {@link CombinerModule}.
+     *
+     * @param modules modules
+     */
+    public CombinerModule(@Nonnull List<Module> modules) {
+        this(new HashSet<>(modules));
+    }
 
-	/**
-	 * Constructor of {@link CombinerModule}.
-	 *
-	 * @param modules modules
-	 */
-	public CombinerModule(@Nonnull Set<Module> modules) {
-		this.modules = modules;
-	}
+    /**
+     * Constructor of {@link CombinerModule}.
+     *
+     * @param modules modules
+     */
+    public CombinerModule(@Nonnull Set<Module> modules) {
+        this.modules = modules;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void configure() {
-		this.modules.forEach(this::install);
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void configure() {
+        this.modules.forEach(this::install);
+    }
 }
