@@ -76,6 +76,8 @@ public class ClassEntity extends AbstractEntity {
 
 
         Object[] parameters = Arrays.stream(this.constructor.getParameterTypes())
+                .filter(parameterType -> !parameterType.isPrimitive())
+                .filter(parameterType -> !parameterType.isArray())
                 .map(parameterType -> super.module.getInstance(parameterType))
                 .toArray();
 
