@@ -1,0 +1,36 @@
+## Directories ##
+out/
+logs/
+build/
+.idea/
+.gradle/
+.mtj.tmp/
+cmake-build-*/
+.idea_modules/
+
+## Error log files ##
+hs_err_pid*
+replay_pid*
+
+## Plugin-specific files ##
+fabric.properties
+crashlytics.properties
+atlassian-ide-plugin.xml
+crashlytics-build.properties
+com_crashlytics_export_strings.xml
+
+## Extensions ##
+*.class
+*.log
+*.ctxt
+*.war
+*.nar
+*.ear
+*.zip
+*.rar
+*.iws
+*.tar.gz
+
+## Whitelist ##
+!gradle-wrapper.jar
+!gradle-wrapper.properties
