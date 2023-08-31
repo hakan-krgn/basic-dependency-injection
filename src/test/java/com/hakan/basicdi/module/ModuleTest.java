@@ -1,7 +1,7 @@
 package com.hakan.basicdi.module;
 
 import com.hakan.basicdi.annotations.PostConstruct;
-import com.hakan.basicdi.annotations.Provide;
+import com.hakan.basicdi.annotations.Service;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,16 +29,12 @@ class ModuleTest {
 
         @Override
         public void configure() {
-
-        }
-
-        @Provide
-        public ExampleService exampleService() {
-            return new ExampleService();
+            this.bind(ExampleService.class);
         }
     }
 
 
+    @Service
     public static class ExampleService {
 
         public String name;
