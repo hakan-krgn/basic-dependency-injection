@@ -7,14 +7,14 @@ import com.hakan.test.config.TestConfig;
 @Component
 public class TestItem {
 
-    private final String name;
+	private final String name;
 
-    @Autowired
-    public TestItem(TestConfig config) {
-        this.name = config.getItemName();
-    }
+	@Autowired
+	public TestItem(TestConfig config) {
+		this.name = config.getItemName();
+	}
 
-    public String getName() {
-        return this.name;
-    }
+	public String getName() {
+		return this.name;
+	}
 }

@@ -8,14 +8,14 @@ import com.hakan.test.service.TestService;
 
 public class TestModule extends Module {
 
-    @Override
-    public void configure() {
-        this.bind(TestItem.class);
-        this.bind(TestService.class);
-    }
+	@Override
+	public void configure() {
+		this.bind(TestItem.class);
+		this.bind(TestService.class);
+	}
 
-    @Provide
-    public TestConfig testConfig() {
-        return new TestConfig("Test Item", "Test Message 1", "Test Message 2");
-    }
+	@Provide
+	public TestConfig testConfig() {
+		return new TestConfig("Test Item", "Test Message 1", "Test Message 2");
+	}
 }

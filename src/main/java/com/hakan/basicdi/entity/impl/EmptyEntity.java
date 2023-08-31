@@ -19,24 +19,24 @@ import javax.annotation.Nonnull;
  */
 public class EmptyEntity extends AbstractEntity {
 
-    /**
-     * Constructor of {@link EmptyEntity}.
-     *
-     * @param module module
-     * @param type   type
-     */
-    public EmptyEntity(@Nonnull Module module,
-                       @Nonnull Class<?> type) {
-        super(module, type, Scope.SINGLETON);
-    }
+	/**
+	 * Constructor of {@link EmptyEntity}.
+	 *
+	 * @param module module
+	 * @param type   type
+	 */
+	public EmptyEntity(@Nonnull Module module,
+					   @Nonnull Class<?> type) {
+		super(module, type, Scope.SINGLETON);
+	}
 
 
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public @Nonnull Object createInstance() {
-        return super.instance;
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public @Nonnull Object createInstance() {
+		return super.instance;
+	}
 }

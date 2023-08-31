@@ -19,15 +19,15 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Service {
 
-    /**
-     * Scope of the class.
-     * <p>
-     * Default value is SINGLETON, and
-     * it means that class will be
-     * instantiated only once.
-     *
-     * @return scope
-     */
-    @Nonnull
-    Scope scope() default Scope.SINGLETON;
+	/**
+	 * Scope of the class.
+	 * <p>
+	 * Default value is SINGLETON, and
+	 * it means that class will be
+	 * instantiated only once.
+	 *
+	 * @return scope
+	 */
+	@Nonnull
+	Scope scope() default Scope.SINGLETON;
 }
