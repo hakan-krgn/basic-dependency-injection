@@ -103,7 +103,7 @@ public class MyService {
 
     public void doSomething() {
         for (int i = 0; i < 10; i++) {
-            System.out.println(this.myRepository.get(1));
+            System.out.println(this.myRepository.get(i));
         }
     }
     // Other methods...
@@ -134,12 +134,6 @@ public class Application {
     }
 }
 ```
-
-### Example Project
-
-You can check the
-[example project](https://github.com/hakan-krgn/basic-dependency-injection/tree/master/src/test/java/com/hakan/test) to
-see how to use the library.
 
 ## License
 
