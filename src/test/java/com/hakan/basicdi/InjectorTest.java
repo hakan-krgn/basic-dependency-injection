@@ -7,23 +7,25 @@ import com.hakan.basicdi.module.Module;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class InjectorTest {
 
+    private final Injector injector = Injector.of(new ExampleModule()).create();
+
     @Test
     void create() {
-        Injector injector = Injector.of(new ExampleModule()).create();
-
-        injector.getInstance(ExampleService.class);
-        injector.getInstance(ExampleComponent.class);
+        assertNotNull(this.injector.getInstance(ExampleService.class));
+        assertNotNull(this.injector.getInstance(ExampleComponent.class));
     }
 
     @Test
     void checkVariables() {
-        Injector injector = Injector.of(new ExampleModule()).create();
+        ExampleService service = this.injector.getInstance(ExampleService.class);
+        ExampleComponent component = this.injector.getInstance(ExampleComponent.class);
 
-        ExampleService service = injector.getInstance(ExampleService.class);
-        ExampleComponent component = injector.getInstance(ExampleComponent.class);
+        assertNotNull(service);
+        assertNotNull(component);
 
         assertEquals(service.name, "example service");
         assertEquals(service.version, "1.0.0");
@@ -33,16 +35,14 @@ class InjectorTest {
 
     @Test
     void checkObjects() {
-        Injector injector = Injector.of(new ExampleModule()).create();
-
         assertEquals(
-                injector.getInstance(ExampleService.class),
-                injector.getInstance(ExampleService.class)
+                this.injector.getInstance(ExampleService.class),
+                this.injector.getInstance(ExampleService.class)
         );
 
         assertEquals(
-                injector.getInstance(ExampleComponent.class),
-                injector.getInstance(ExampleComponent.class)
+                this.injector.getInstance(ExampleComponent.class),
+                this.injector.getInstance(ExampleComponent.class)
         );
     }
 
