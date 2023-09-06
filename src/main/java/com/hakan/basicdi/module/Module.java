@@ -1,10 +1,10 @@
 package com.hakan.basicdi.module;
 
 import com.hakan.basicdi.annotations.Provide;
+import com.hakan.basicdi.annotations.Runner;
 import com.hakan.basicdi.entity.AbstractEntity;
 import com.hakan.basicdi.entity.EntityFactory;
 import com.hakan.basicdi.reflection.Reflection;
-import lombok.SneakyThrows;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Method;
@@ -34,6 +34,7 @@ public abstract class Module {
     public Module() {
         this.entities = new LinkedHashSet<>();
         this.reflection = new Reflection(this.getClass());
+        this.reflection.getMethodsAnnotatedWith(Runner.class).forEach(this::bind);
         this.reflection.getMethodsAnnotatedWith(Provide.class).forEach(this::bind);
     }
 
@@ -88,7 +89,6 @@ public abstract class Module {
      * Creates all instances of the entities
      * that are bound to the module.
      */
-    @SneakyThrows
     public final void create() {
         this.entities.forEach(AbstractEntity::createInstance);
     }
@@ -123,8 +123,7 @@ public abstract class Module {
      */
     public final @Nonnull AbstractEntity getEntity(@Nonnull Class<?> clazz) {
         return this.entities.stream()
-                .filter(entity -> entity.getType().equals(clazz) || entity.getSubTypes().contains(clazz))
-                .findFirst()
+                .filter(entity -> entity.getSubTypes().contains(clazz)).findFirst()
                 .orElseThrow(() -> new RuntimeException("no inject entity found for class " + clazz.getName()));
     }
 

@@ -39,8 +39,12 @@ public class ClassEntity extends AbstractEntity {
                        @Nonnull Scope scope) {
         super(module, type, scope);
         this.fields = super.reflection.getFieldsAnnotatedWith(Autowired.class);
-        this.postConstructMethods = super.reflection.getMethodsAnnotatedWith(PostConstruct.class);
         this.constructor = ReflectionUtils.getConstructor(type, Autowired.class);
+        this.postConstructMethods = super.reflection.getMethodsAnnotatedWith(PostConstruct.class);
+
+        this.constructor.setAccessible(true);
+        this.fields.forEach(field -> field.setAccessible(true));
+        this.postConstructMethods.forEach(method -> method.setAccessible(true));
     }
 
     /**
@@ -76,20 +80,17 @@ public class ClassEntity extends AbstractEntity {
 
 
         Object[] parameters = Arrays.stream(this.constructor.getParameterTypes())
-                .filter(parameterType -> !parameterType.isPrimitive())
                 .filter(parameterType -> !parameterType.isArray())
+                .filter(parameterType -> !parameterType.isPrimitive())
                 .map(parameterType -> super.module.getInstance(parameterType))
                 .toArray();
 
         super.instance = this.constructor.newInstance(parameters);
 
-        for (Field field : this.fields) {
-            field.setAccessible(true);
+        for (Field field : this.fields)
             field.set(super.instance, super.module.getInstance(field.getType()));
-        }
-        for (Method method : this.postConstructMethods) {
+        for (Method method : this.postConstructMethods)
             method.invoke(super.instance);
-        }
 
         return super.instance;
     }

@@ -39,6 +39,8 @@ public abstract class AbstractEntity {
         this.module = module;
         this.subTypes = new ArrayList<>();
         this.reflection = new Reflection(type);
+
+        this.subTypes.add(type);
         this.subTypes.add(type.getSuperclass());
         this.subTypes.addAll(Arrays.asList(type.getInterfaces()));
     }
@@ -51,9 +53,7 @@ public abstract class AbstractEntity {
      * @return instance
      */
     public final @Nonnull Object getInstance() {
-        if (this.instance == null || this.scope == Scope.PROTOTYPE)
-            return this.createInstance();
-        return this.instance;
+        return this.createInstance();
     }
 
     /**

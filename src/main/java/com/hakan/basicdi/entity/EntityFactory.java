@@ -2,10 +2,12 @@ package com.hakan.basicdi.entity;
 
 import com.hakan.basicdi.annotations.Component;
 import com.hakan.basicdi.annotations.Provide;
+import com.hakan.basicdi.annotations.Runner;
 import com.hakan.basicdi.annotations.Service;
 import com.hakan.basicdi.entity.impl.ClassEntity;
 import com.hakan.basicdi.entity.impl.EmptyEntity;
-import com.hakan.basicdi.entity.impl.MethodEntity;
+import com.hakan.basicdi.entity.impl.MethodProviderEntity;
+import com.hakan.basicdi.entity.impl.MethodRunnerEntity;
 import com.hakan.basicdi.module.Module;
 
 import javax.annotation.Nonnull;
@@ -43,9 +45,11 @@ public class EntityFactory {
      */
     public static @Nonnull AbstractEntity create(@Nonnull Module module,
                                                  @Nonnull Method method) {
-        if (!method.isAnnotationPresent(Provide.class))
-            throw new RuntimeException("no @Provide annotation found for method " + method.getName());
+        if (method.isAnnotationPresent(Provide.class))
+            return new MethodProviderEntity(module, method);
+        if (method.isAnnotationPresent(Runner.class))
+            return new MethodRunnerEntity(module, method);
 
-        return new MethodEntity(module, method);
+        throw new RuntimeException("no @Provide or @Runner annotation found for method " + method.getName());
     }
 }

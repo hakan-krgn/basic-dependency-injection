@@ -17,19 +17,19 @@ import java.util.Arrays;
  * create an instance of return type
  * the method.
  */
-public class MethodEntity extends AbstractEntity {
+public class MethodRunnerEntity extends AbstractEntity {
 
     private final Method method;
     private final Object methodInstance;
 
     /**
-     * Constructor of {@link MethodEntity}.
+     * Constructor of {@link MethodRunnerEntity}.
      *
      * @param module module
      * @param method method
      */
-    public MethodEntity(@Nonnull Module module,
-                        @Nonnull Method method) {
+    public MethodRunnerEntity(@Nonnull Module module,
+                              @Nonnull Method method) {
         super(module, method.getReturnType(), Scope.SINGLETON);
         this.method = method;
         this.methodInstance = module;
@@ -61,16 +61,19 @@ public class MethodEntity extends AbstractEntity {
     @Override
     @SneakyThrows
     public @Nonnull Object createInstance() {
-        if (super.scope == Scope.SINGLETON && super.instance != null)
-            return super.instance;
+        if (this.method.getReturnType() != Runnable.class)
+            throw new RuntimeException("return type of method must be java.lang.Runnable!");
 
 
         Object[] parameters = Arrays.stream(this.method.getParameterTypes())
-                .filter(parameterType -> !parameterType.isPrimitive())
                 .filter(parameterType -> !parameterType.isArray())
+                .filter(parameterType -> !parameterType.isPrimitive())
                 .map(parameterType -> super.module.getInstance(parameterType))
                 .toArray();
 
-        return super.instance = this.method.invoke(this.methodInstance, parameters);
+        super.instance = this.method.invoke(this.methodInstance, parameters);
+        ((Runnable) super.instance).run();
+
+        return super.instance;
     }
 }
