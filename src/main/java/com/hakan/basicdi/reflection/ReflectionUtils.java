@@ -70,7 +70,7 @@ public class ReflectionUtils {
         URL jarPath = ReflectionUtils.class.getProtectionDomain().getCodeSource().getLocation();
 
         if (!jarPath.toString().endsWith(".jar")) return findClasses1(basePackage);
-        if (!jarPath.toString().endsWith(".zip")) throw new RuntimeException("this is not a jar!");
+        if (jarPath.toString().endsWith(".zip")) throw new RuntimeException("this is not a jar!");
 
 
         Set<Class<?>> classes = new HashSet<>();
