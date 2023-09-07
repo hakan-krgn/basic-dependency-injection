@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
-import java.net.URI;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashSet;
@@ -67,7 +67,7 @@ public class ReflectionUtils {
      */
     @SneakyThrows
     private static @Nonnull Set<Class<?>> findClasses0(@Nonnull String basePackage) {
-        URI jarPath = ReflectionUtils.class.getProtectionDomain().getCodeSource().getLocation().toURI();
+        URL jarPath = ReflectionUtils.class.getProtectionDomain().getCodeSource().getLocation();
 
         if (!jarPath.toString().endsWith(".jar")) return findClasses1(basePackage);
         if (!jarPath.toString().endsWith(".zip")) throw new RuntimeException("this is not a jar!");
@@ -75,7 +75,7 @@ public class ReflectionUtils {
 
         Set<Class<?>> classes = new HashSet<>();
         String packagePath = basePackage.replace(".", File.separator);
-        ZipInputStream zip = new ZipInputStream(Files.newInputStream(Paths.get(jarPath)));
+        ZipInputStream zip = new ZipInputStream(Files.newInputStream(Paths.get(jarPath.toURI())));
 
         for (ZipEntry entry = zip.getNextEntry(); entry != null; entry = zip.getNextEntry()) {
             String className = entry.getName().replace("/", File.separator);
@@ -104,7 +104,7 @@ public class ReflectionUtils {
         Set<Class<?>> classes = new HashSet<>();
 
         InputStream stream = ClassLoader.getSystemClassLoader()
-                .getResourceAsStream(basePackage.replaceAll("[.]", File.separator));
+                .getResourceAsStream(basePackage.replace(".", File.separator));
         BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 
         reader.lines().forEach(_className -> {
