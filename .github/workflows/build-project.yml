@@ -11,7 +11,11 @@ on:
 jobs:
   build:
     name: 'build, test and publish'
-    runs-on: 'ubuntu-latest'
+    runs-on: '${{ matrix.os }}'
+
+    strategy:
+      matrix:
+        os: [ 'ubuntu-latest', 'macos-latest', 'windows-latest' ]
 
     steps:
       - name: 'Checkout repository'
