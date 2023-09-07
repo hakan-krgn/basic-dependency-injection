@@ -4,6 +4,7 @@ import lombok.SneakyThrows;
 
 import javax.annotation.Nonnull;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.annotation.Annotation;
@@ -49,7 +50,7 @@ public class ReflectionUtils {
         Set<Class<?>> classes = new HashSet<>();
 
         InputStream stream = ClassLoader.getSystemClassLoader()
-                .getResourceAsStream(basePackage.replaceAll("[.]", "/"));
+                .getResourceAsStream(basePackage.replaceAll("[.]", File.separator));
         BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 
         reader.lines().forEach(_className -> {
