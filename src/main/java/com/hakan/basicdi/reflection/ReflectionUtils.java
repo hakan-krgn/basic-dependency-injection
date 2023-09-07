@@ -9,9 +9,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 /**
  * ReflectionUtils is a utility class to
@@ -45,8 +50,53 @@ public class ReflectionUtils {
      * @param basePackage the base package
      * @return the classes
      */
-    @SneakyThrows
     public static @Nonnull Set<Class<?>> findClasses(@Nonnull String basePackage) {
+        try {
+            return findClasses0(basePackage);
+        } catch (Exception | Error e) {
+            return findClasses1(basePackage);
+        }
+    }
+
+
+
+    /**
+     * Scans everywhere in the given base package
+     * and returns the classes which are found.
+     *
+     * @param basePackage the base package
+     * @return the classes
+     */
+    private static @Nonnull Set<Class<?>> findClasses0(@Nonnull String basePackage) throws Exception {
+        Set<Class<?>> classes = new HashSet<>();
+
+        String separator = System.getProperty("file.separator");
+        String packagePath = basePackage.replace(".", separator);
+        URI jarPath = ReflectionUtils.class.getProtectionDomain().getCodeSource().getLocation().toURI();
+        ZipInputStream zip = new ZipInputStream(Files.newInputStream(Paths.get(jarPath)));
+
+        for (ZipEntry entry = zip.getNextEntry(); entry != null; entry = zip.getNextEntry()) {
+            String className = entry.getName().replace("/", separator);
+            if (!className.startsWith(packagePath) || !className.endsWith(".class")) continue;
+
+            try {
+                classes.add(Class.forName(className.replace(separator, ".").substring(0, className.length() - 6)));
+            } catch (Error | Exception ignored) {
+
+            }
+        }
+
+        return classes;
+    }
+
+    /**
+     * Scans everywhere in the given base package
+     * and returns the classes which are found.
+     *
+     * @param basePackage the base package
+     * @return the classes
+     */
+    private static @Nonnull Set<Class<?>> findClasses1(@Nonnull String basePackage) {
         Set<Class<?>> classes = new HashSet<>();
 
         InputStream stream = ClassLoader.getSystemClassLoader()
@@ -55,12 +105,11 @@ public class ReflectionUtils {
 
         reader.lines().forEach(_className -> {
             String className = basePackage + "." + _className.replace(".class", "");
-            loadClass(className, classes::add, () -> classes.addAll(findClasses(className)));
+            loadClass(className, classes::add, () -> classes.addAll(findClasses1(className)));
         });
 
         return classes;
     }
-
 
     /**
      * Loads the class from the given class name
