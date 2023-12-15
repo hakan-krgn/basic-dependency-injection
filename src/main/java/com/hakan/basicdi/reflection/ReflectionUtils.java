@@ -51,7 +51,11 @@ public class ReflectionUtils {
      * @return the classes
      */
     public static @Nonnull Set<Class<?>> findClasses(@Nonnull String basePackage) {
-        return findClasses0(basePackage);
+        try {
+            return findClasses0(basePackage);
+        } catch (Exception e) {
+            return findClasses1(basePackage);
+        }
     }
 
 
@@ -69,8 +73,8 @@ public class ReflectionUtils {
     private static @Nonnull Set<Class<?>> findClasses0(@Nonnull String basePackage) {
         URL jarPath = ReflectionUtils.class.getProtectionDomain().getCodeSource().getLocation();
 
-        if (!jarPath.toString().endsWith(".jar")) return findClasses1(basePackage);
-        if (jarPath.toString().endsWith(".zip")) throw new RuntimeException("this is not a jar!");
+        if (!jarPath.toString().endsWith(".jar"))
+            throw new RuntimeException("this is not a jar file!");
 
 
         Set<Class<?>> classes = new HashSet<>();

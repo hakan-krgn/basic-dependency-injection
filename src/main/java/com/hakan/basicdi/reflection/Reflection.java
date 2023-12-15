@@ -21,10 +21,10 @@ public class Reflection {
     /**
      * Constructor of {@link Reflection}.
      *
-     * @param basePackage the base package to scan
+     * @param types types
      */
-    public Reflection(@Nonnull String basePackage) {
-        this.types = ReflectionUtils.findClasses(basePackage);
+    public Reflection(@Nonnull Set<Class<?>> types) {
+        this.types = types;
     }
 
     /**
@@ -33,8 +33,18 @@ public class Reflection {
      * @param clazz the class to scan
      */
     public Reflection(@Nonnull Class<?>... clazz) {
-        this.types = new HashSet<>(Arrays.asList(clazz));
+        this(new HashSet<>(Arrays.asList(clazz)));
     }
+
+    /**
+     * Constructor of {@link Reflection}.
+     *
+     * @param basePackage the base package to scan
+     */
+    public Reflection(@Nonnull String basePackage) {
+        this(ReflectionUtils.findClasses(basePackage));
+    }
+
 
     /**
      * Returns all the fields annotated
