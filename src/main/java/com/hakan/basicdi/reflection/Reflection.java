@@ -55,11 +55,21 @@ public class Reflection {
      * @return the fields
      */
     public @Nonnull Set<Field> getFieldsAnnotatedWith(@Nonnull Class<? extends Annotation> annotation) {
-        return this.types.stream()
-                .filter(type -> !type.isAnnotation())
-                .flatMap(type -> Arrays.stream(type.getDeclaredFields()))
-                .filter(field -> field.isAnnotationPresent(annotation))
-                .collect(Collectors.toSet());
+        Set<Field> set = new HashSet<>();
+        for (Class<?> type : this.types) {
+            try {
+                if (!type.isAnnotation()) {
+                    for (Field field : type.getDeclaredFields()) {
+                        if (field.isAnnotationPresent(annotation)) {
+                            set.add(field);
+                        }
+                    }
+                }
+            } catch (NoClassDefFoundError ignored) {
+
+            }
+        }
+        return set;
     }
 
     /**
@@ -71,11 +81,21 @@ public class Reflection {
      * @return the methods
      */
     public @Nonnull Set<Method> getMethodsAnnotatedWith(@Nonnull Class<? extends Annotation> annotation) {
-        return this.types.stream()
-                .filter(type -> !type.isAnnotation())
-                .flatMap(type -> Arrays.stream(type.getDeclaredMethods()))
-                .filter(method -> method.isAnnotationPresent(annotation))
-                .collect(Collectors.toSet());
+        Set<Method> set = new HashSet<>();
+        for (Class<?> type : this.types) {
+            try {
+                if (!type.isAnnotation()) {
+                    for (Method method : type.getDeclaredMethods()) {
+                        if (method.isAnnotationPresent(annotation)) {
+                            set.add(method);
+                        }
+                    }
+                }
+            } catch (NoClassDefFoundError ignored) {
+
+            }
+        }
+        return set;
     }
 
     /**
@@ -87,11 +107,21 @@ public class Reflection {
      * @return the constructors
      */
     public @Nonnull Set<Constructor<?>> getConstructorsAnnotatedWith(@Nonnull Class<? extends Annotation> annotation) {
-        return this.types.stream()
-                .filter(type -> !type.isAnnotation())
-                .flatMap(type -> Arrays.stream(type.getDeclaredConstructors()))
-                .filter(constructor -> constructor.isAnnotationPresent(annotation))
-                .collect(Collectors.toSet());
+        Set<Constructor<?>> set = new HashSet<>();
+        for (Class<?> type : this.types) {
+            try {
+                if (!type.isAnnotation()) {
+                    for (Constructor<?> constructor : type.getDeclaredConstructors()) {
+                        if (constructor.isAnnotationPresent(annotation)) {
+                            set.add(constructor);
+                        }
+                    }
+                }
+            } catch (NoClassDefFoundError ignored) {
+
+            }
+        }
+        return set;
     }
 
     /**
